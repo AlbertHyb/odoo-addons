@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_agent_runtime_user,agent.runtime.user,model_odoo_agent_runtime,base.group_user,1,0,0,0
+access_agent_runtime_admin,agent.runtime.admin,model_odoo_agent_runtime,odoo_agent.group_agent_admin,1,1,1,1
+access_agent_user,agent.user,model_odoo_agent,base.group_user,1,0,0,0
+access_agent_admin,agent.admin,model_odoo_agent,odoo_agent.group_agent_admin,1,1,1,1
+access_agent_skill_user,agent.skill.user,model_odoo_agent_skill,base.group_user,1,0,0,0
+access_agent_skill_admin,agent.skill.admin,model_odoo_agent_skill,odoo_agent.group_agent_admin,1,1,1,1
+access_agent_task_user,agent.task.user,model_odoo_agent_task,base.group_user,1,0,0,0
+access_agent_task_admin,agent.task.admin,model_odoo_agent_task,odoo_agent.group_agent_admin,1,1,1,1

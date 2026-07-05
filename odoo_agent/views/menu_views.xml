@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu -->
+    <menuitem id="menu_agent_root" name="AI Agents"
+        sequence="100" web_icon="odoo_agent,static/description/icon.png"/>
+
+    <!-- Agent Runtimes -->
+    <menuitem id="menu_agent_runtime" name="Runtimes"
+        parent="menu_agent_root" sequence="10"
+        action="action_agent_runtime"/>
+
+    <!-- Agents -->
+    <menuitem id="menu_agent" name="Agents"
+        parent="menu_agent_root" sequence="20"
+        action="action_agent"/>
+
+    <!-- Skills -->
+    <menuitem id="menu_agent_skill" name="Skills"
+        parent="menu_agent_root" sequence="30"
+        action="action_agent_skill"/>
+
+    <!-- Tasks -->
+    <menuitem id="menu_agent_task" name="Tasks"
+        parent="menu_agent_root" sequence="40"
+        action="action_agent_task"/>
+
+    <!-- Actions -->
+    <record id="action_agent_runtime" model="ir.actions.act_window">
+        <field name="name">Runtimes</field>
+        <field name="res_model">odoo.agent.runtime</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>Manage AI Agent Runtimes — external machines that execute AI agents.</p>
+        </field>
+    </record>
+
+    <record id="action_agent" model="ir.actions.act_window">
+        <field name="name">Agents</field>
+        <field name="res_model">odoo.agent</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p>Manage AI Agents — configurable entities with instructions and skills.</p>
+        </field>
+    </record>
+
+    <record id="action_agent_skill" model="ir.actions.act_window">
+        <field name="name">Skills</field>
+        <field name="res_model">odoo.agent.skill</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>Manage reusable AI Agent Skills — instruction packs that can be attached to agents.</p>
+        </field>
+    </record>
+
+    <record id="action_agent_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">odoo.agent.task</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>View AI Agent Tasks — tasks assigned to and executed by AI agents.</p>
+        </field>
+    </record>
+
+    <record id="action_agent_task_complete_wizard" model="ir.actions.act_window">
+        <field name="name">Complete Task</field>
+        <field name="res_model">odoo.agent.task</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

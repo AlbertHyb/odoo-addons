@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agent_runtime_tree" model="ir.ui.view">
+        <field name="name">odoo.agent.runtime.tree</field>
+        <field name="model">odoo.agent.runtime</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="machine_id"/>
+                <field name="status" widget="badge"/>
+                <field name="last_seen"/>
+                <field name="version"/>
+                <field name="active_agent_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_agent_runtime_form" model="ir.ui.view">
+        <field name="name">odoo.agent.runtime.form</field>
+        <field name="model">odoo.agent.runtime</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_mark_online" type="object" string="Mark Online"
+                        states="offline" class="btn-primary"/>
+                    <button name="action_mark_offline" type="object" string="Mark Offline"
+                        states="online,busy"/>
+                    <button name="action_generate_api_key" type="object" string="Generate API Key"
+                        groups="odoo_agent.group_agent_admin"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="machine_id"/>
+                            <field name="ip_address"/>
+                            <field name="status" widget="badge"/>
+                        </group>
+                        <group>
+                            <field name="last_seen"/>
+                            <field name="version"/>
+                            <field name="device_info"/>
+                            <field name="api_key" password="True"
+                                groups="odoo_agent.group_agent_admin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="agents" string="Agents">
+                            <field name="agent_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="model"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agent_runtime_search" model="ir.ui.view">
+        <field name="name">odoo.agent.runtime.search</field>
+        <field name="model">odoo.agent.runtime</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="machine_id"/>
+                <filter name="online" string="Online"
+                    domain="[('status', '=', 'online')]"/>
+                <filter name="offline" string="Offline"
+                    domain="[('status', '=', 'offline')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_status" string="Status"
+                        context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

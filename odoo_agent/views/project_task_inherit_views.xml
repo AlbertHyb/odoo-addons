@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_task_form_inherit_agent" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.agent</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <field name="user_ids" position="after">
+                <field name="agent_id"
+                    options="{'no_create': True}"
+                    placeholder="Assign to AI agent..."/>
+                <field name="agent_status" widget="badge"
+                    attrs="{'invisible': [('agent_id', '=', False)]}"/>
+            </field>
+            <div name="button_box" position="inside">
+                <button name="action_assign_agent" type="object"
+                    class="oe_stat_button" icon="fa-robot"
+                    string="AI Agent"
+                    help="Assign this task to an AI agent"/>
+            </div>
+        </field>
+    </record>
+
+    <record id="view_project_task_search_inherit_agent" model="ir.ui.view">
+        <field name="name">project.task.search.inherit.agent</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <filter name="my_tasks" position="after">
+                <separator/>
+                <filter name="ai_assigned" string="AI Assigned"
+                    domain="[('agent_id', '!=', False)]"/>
+                <filter name="ai_not_assigned" string="Not AI Assigned"
+                    domain="[('agent_id', '=', False)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
