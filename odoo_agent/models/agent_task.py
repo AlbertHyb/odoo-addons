@@ -89,6 +89,7 @@ class AgentTask(models.Model):
             'status': 'in_progress',
             'started_at': fields.Datetime.now(),
         })
+        self._sync_project_task_stage()
 
     def action_complete(self, result=None):
         self.ensure_one()
@@ -99,6 +100,7 @@ class AgentTask(models.Model):
         if result:
             vals['result'] = result
         self.write(vals)
+        self._sync_project_task_stage()
         if self.task_id:
             self.task_id.message_post(
                 body=f'Agent <b>{self.agent_id.name}</b> completed task: {self.name}',
@@ -114,8 +116,30 @@ class AgentTask(models.Model):
         if error_message:
             vals['error_message'] = error_message
         self.write(vals)
+        self._sync_project_task_stage()
         if self.task_id:
             self.task_id.message_post(
                 body=f'Agent <b>{self.agent_id.name}</b> failed task: {self.name}',
                 subject=f'Task failed: {self.name}',
             )
+
+    def _sync_project_task_stage(self):
+        """Sync agent task status to linked project.task stage."""
+        self.ensure_one()
+        if not self.task_id:
+            return
+        stage_map = {
+            'pending': 'New',
+            'in_progress': 'In Progress',
+            'completed': 'Done',
+            'failed': 'Cancelled',
+            'cancelled': 'Cancelled',
+        }
+        target = stage_map.get(self.status)
+        if not target:
+            return
+        stage = self.env['project.task.type'].search([
+            ('name', '=', target),
+        ], limit=1)
+        if stage:
+            self.task_id.stage_id = stage.id

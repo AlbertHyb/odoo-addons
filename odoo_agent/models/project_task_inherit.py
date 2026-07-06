@@ -46,8 +46,33 @@ class ProjectTask(models.Model):
             'task_id': self.id,
         })
         self.agent_task_id = agent_task.id
+        # Move to first non-folded stage (New/Inbox)
+        first_stage = self.env['project.task.type'].search([
+            ('fold', '=', False),
+        ], order='sequence', limit=1)
+        if first_stage:
+            self.stage_id = first_stage.id
         self.message_post(
             body=f'Task assigned to AI agent: <b>{self.agent_id.name}</b>',
             subject='Task assigned to AI agent',
         )
         return True
+
+    def _update_stage_from_agent_status(self, agent_status):
+        """Update project.task stage based on agent task status."""
+        self.ensure_one()
+        stage_map = {
+            'pending': 'New',
+            'in_progress': 'In Progress',
+            'completed': 'Done',
+            'failed': 'Cancelled',
+            'cancelled': 'Cancelled',
+        }
+        target_stage_name = stage_map.get(agent_status)
+        if not target_stage_name:
+            return
+        stage = self.env['project.task.type'].search([
+            ('name', '=', target_stage_name),
+        ], limit=1)
+        if stage:
+            self.stage_id = stage.id
