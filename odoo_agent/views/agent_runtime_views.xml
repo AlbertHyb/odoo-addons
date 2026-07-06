@@ -4,14 +4,14 @@
         <field name="name">odoo.agent.runtime.tree</field>
         <field name="model">odoo.agent.runtime</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="machine_id"/>
                 <field name="status" widget="badge"/>
                 <field name="last_seen"/>
                 <field name="version"/>
                 <field name="active_agent_count"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -22,9 +22,9 @@
             <form>
                 <header>
                     <button name="action_mark_online" type="object" string="Mark Online"
-                        states="offline" class="btn-primary"/>
+                        class="btn-primary"/>
                     <button name="action_mark_offline" type="object" string="Mark Offline"
-                        states="online,busy"/>
+                       />
                     <button name="action_generate_api_key" type="object" string="Generate API Key"
                         groups="odoo_agent.group_agent_admin"/>
                 </header>
@@ -47,11 +47,11 @@
                     <notebook>
                         <page name="agents" string="Agents">
                             <field name="agent_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="status" widget="badge"/>
                                     <field name="model"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>

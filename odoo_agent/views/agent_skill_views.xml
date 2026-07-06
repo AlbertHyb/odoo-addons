@@ -4,11 +4,11 @@
         <field name="name">odoo.agent.skill.tree</field>
         <field name="model">odoo.agent.skill</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="category" widget="badge"/>
                 <field name="active"/>
-            </tree>
+            </list>
         </field>
     </record>
 

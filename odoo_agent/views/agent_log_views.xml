@@ -4,7 +4,7 @@
         <field name="name">odoo.agent.log.tree</field>
         <field name="model">odoo.agent.log</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="timestamp"/>
                 <field name="level" widget="badge" decoration-danger="level == 'error'"
                     decoration-warning="level == 'warn'"
@@ -12,7 +12,7 @@
                     decoration-muted="level == 'debug'"/>
                 <field name="message"/>
                 <field name="command"/>
-            </tree>
+            </list>
         </field>
     </record>
 

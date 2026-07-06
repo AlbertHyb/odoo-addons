@@ -4,13 +4,13 @@
         <field name="name">odoo.agent.chat.message.tree</field>
         <field name="model">odoo.agent.chat.message</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="timestamp"/>
                 <field name="author_type" widget="badge"/>
                 <field name="author_id"/>
                 <field name="content"/>
                 <field name="is_read"/>
-            </tree>
+            </list>
         </field>
     </record>
 

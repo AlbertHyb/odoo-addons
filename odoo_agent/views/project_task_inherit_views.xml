@@ -9,8 +9,7 @@
                 <field name="agent_id"
                     options="{'no_create': True}"
                     placeholder="Assign to AI agent..."/>
-                <field name="agent_status" widget="badge"
-                    attrs="{'invisible': [('agent_id', '=', False)]}"/>
+                <field name="agent_status" widget="badge"/>
             </field>
             <div name="button_box" position="inside">
                 <button name="action_assign_agent" type="object"
