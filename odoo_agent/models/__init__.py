@@ -5,4 +5,5 @@ from . import agent
 from . import agent_skill
 from . import agent_task
 from . import agent_log
+from . import agent_chat
 from . import project_task_inherit

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agent_chat_message_tree" model="ir.ui.view">
+        <field name="name">odoo.agent.chat.message.tree</field>
+        <field name="model">odoo.agent.chat.message</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="timestamp"/>
+                <field name="author_type" widget="badge"/>
+                <field name="author_id"/>
+                <field name="content"/>
+                <field name="is_read"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_agent_chat_message_search" model="ir.ui.view">
+        <field name="name">odoo.agent.chat.message.search</field>
+        <field name="model">odoo.agent.chat.message</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="agent_id"/>
+                <field name="author_id"/>
+                <filter name="unread" string="Unread"
+                    domain="[('is_read', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

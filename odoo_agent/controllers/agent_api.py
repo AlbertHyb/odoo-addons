@@ -258,3 +258,64 @@ class AgentApiController(http.Controller):
             'runtime_id': runtime.id,
             'api_key': runtime.api_key,
         })
+
+    @http.route(
+        '/api/agent/<int:agent_id>/chat',
+        type='http',
+        methods=['POST'],
+        auth='user',
+        csrf=False,
+    )
+    def send_chat_message(self, agent_id, **kwargs):
+        """Send a chat message to an agent (requires Odoo auth)."""
+        content = kwargs.get('content')
+        if not content:
+            return self._json_response({'error': 'content required'}, 400)
+
+        agent = request.env['odoo.agent'].sudo().browse(agent_id)
+        if not agent.exists():
+            return self._json_response({'error': 'Agent not found'}, 404)
+
+        msg = request.env['odoo.agent.chat.message'].sudo().create({
+            'agent_id': agent_id,
+            'author_id': request.env.user.id,
+            'author_type': 'user',
+            'content': content,
+        })
+
+        return self._json_response({
+            'status': 'ok',
+            'message_id': msg.id,
+            'agent_name': agent.name,
+        })
+
+    @http.route(
+        '/api/agent/<int:agent_id>/chat/messages',
+        type='http',
+        methods=['GET'],
+        auth='user',
+        csrf=False,
+    )
+    def get_chat_messages(self, agent_id, **kwargs):
+        """Get chat history with an agent."""
+        agent = request.env['odoo.agent'].sudo().browse(agent_id)
+        if not agent.exists():
+            return self._json_response({'error': 'Agent not found'}, 404)
+
+        limit = int(kwargs.get('limit', 50))
+        messages = request.env['odoo.agent.chat.message'].sudo().search([
+            ('agent_id', '=', agent_id),
+        ], limit=limit)
+
+        msg_data = []
+        for msg in messages:
+            msg_data.append({
+                'id': msg.id,
+                'author_type': msg.author_type,
+                'author_name': msg.author_id.name if msg.author_id else 'Agent',
+                'content': msg.content,
+                'timestamp': str(msg.timestamp),
+                'is_read': msg.is_read,
+            })
+
+        return self._json_response({'messages': msg_data})
