@@ -22,4 +22,8 @@
     <menuitem id="menu_agent_log" name="Execution Logs"
         parent="menu_agent_root" sequence="50"
         action="odoo_agent.action_agent_log"/>
+
+    <menuitem id="menu_agent_stage_map" name="Stage Mapping"
+        parent="menu_agent_root" sequence="60"
+        action="odoo_agent.action_agent_stage_map"/>
 </odoo>

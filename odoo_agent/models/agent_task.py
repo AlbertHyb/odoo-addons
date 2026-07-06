@@ -124,22 +124,13 @@ class AgentTask(models.Model):
             )
 
     def _sync_project_task_stage(self):
-        """Sync agent task status to linked project.task stage."""
+        """Sync agent task status to linked project.task stage using configurable mapping."""
         self.ensure_one()
         if not self.task_id:
             return
-        stage_map = {
-            'pending': 'New',
-            'in_progress': 'In Progress',
-            'completed': 'Done',
-            'failed': 'Cancelled',
-            'cancelled': 'Cancelled',
-        }
-        target = stage_map.get(self.status)
-        if not target:
-            return
-        stage = self.env['project.task.type'].search([
-            ('name', '=', target),
-        ], limit=1)
+        # Use configurable stage mapping
+        stage = self.env['odoo.agent.stage.map'].get_stage_for_status(
+            self.status, company_id=self.company_id.id
+        )
         if stage:
             self.task_id.stage_id = stage.id

@@ -1,9 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'AI Agent System',
-    'version': '18.0.1.3.0',
+    'version': '18.0.1.4.0',
     'category': 'Productivity',
-    'summary': 'AI Agent management: runtimes, agents, skills, tasks, logs, chat, and dashboard',
+    'summary': 'AI Agent management: runtimes, agents, skills, tasks, logs, chat, and stage mapping',
     'description': """
 Replicates the Multica agent architecture natively within Odoo.
 - Agent Runtimes: external machines (N100, Mac Mini, etc.) connected via API
@@ -12,7 +12,7 @@ Replicates the Multica agent architecture natively within Odoo.
 - Agent Tasks: tasks assigned to AI agents, linked to project.task
 - Execution Logs: detailed command history with streaming support
 - Agent Chat: direct messaging between users and AI agents
-- Dashboard: real-time status overview of agents, runtimes, and tasks
+- Stage Mapping: configurable agent status to project stage mapping
 - REST API: bidirectional communication with external runtimes
     """,
     'author': 'Nicolas Ramos',
@@ -29,6 +29,7 @@ Replicates the Multica agent architecture natively within Odoo.
         'views/agent_task_views.xml',
         'views/agent_log_views.xml',
         'views/agent_chat_views.xml',
+        'views/agent_stage_map_views.xml',
         'views/project_task_inherit_views.xml',
         'data/agent_data.xml',
     ],
