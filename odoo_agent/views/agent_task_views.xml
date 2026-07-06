@@ -10,6 +10,7 @@
                 <field name="status" widget="badge"/>
                 <field name="started_at"/>
                 <field name="completed_at"/>
+                <field name="log_count"/>
             </tree>
         </field>
     </record>
@@ -28,6 +29,15 @@
                         string="Complete" states="in_progress"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_agent_log)d" type="action"
+                            class="oe_stat_button" icon="fa-list-alt">
+                            <div class="o_stat_info">
+                                <field name="log_count"/>
+                                <span class="o_stat_text">Logs</span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
@@ -44,6 +54,22 @@
                     <group string="Description">
                         <field name="description" nolabel="1"/>
                     </group>
+                    <notebook>
+                        <page name="logs" string="Execution Logs">
+                            <field name="log_ids" nolabel="1">
+                                <tree>
+                                    <field name="timestamp"/>
+                                    <field name="level" widget="badge"
+                                        decoration-danger="level == 'error'"
+                                        decoration-warning="level == 'warn'"
+                                        decoration-info="level == 'info'"
+                                        decoration-muted="level == 'debug'"/>
+                                    <field name="message"/>
+                                    <field name="command"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                     <group string="Result" groups="odoo_agent.group_agent_admin">
                         <field name="result" nolabel="1"/>
                     </group>

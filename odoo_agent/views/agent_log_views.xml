@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_agent_log_tree" model="ir.ui.view">
+        <field name="name">odoo.agent.log.tree</field>
+        <field name="model">odoo.agent.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="timestamp"/>
+                <field name="level" widget="badge" decoration-danger="level == 'error'"
+                    decoration-warning="level == 'warn'"
+                    decoration-info="level == 'info'"
+                    decoration-muted="level == 'debug'"/>
+                <field name="message"/>
+                <field name="command"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_agent_log_search" model="ir.ui.view">
+        <field name="name">odoo.agent.log.search</field>
+        <field name="model">odoo.agent.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="message"/>
+                <field name="level"/>
+                <filter name="error" string="Errors"
+                    domain="[('level', '=', 'error')]"/>
+                <filter name="warning" string="Warnings"
+                    domain="[('level', '=', 'warn')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_level" string="Level"
+                        context="{'group_by': 'level'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

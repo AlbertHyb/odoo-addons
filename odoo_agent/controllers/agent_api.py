@@ -63,10 +63,8 @@ class AgentApiController(http.Controller):
         if not runtime:
             return self._json_response({'error': 'Invalid API key'}, 401)
 
-        # Update last seen
         runtime.sudo().write({'last_seen': datetime.now()})
 
-        # Get pending tasks for this runtime's agents
         agent_ids = runtime.agent_ids.ids
         if not agent_ids:
             return self._json_response({'tasks': []})
@@ -153,6 +151,84 @@ class AgentApiController(http.Controller):
             'task_id': task.id,
             'new_status': status,
         })
+
+    @http.route(
+        '/api/agent/task/<int:task_id>/log',
+        type='http',
+        methods=['POST'],
+        auth='none',
+        csrf=False,
+    )
+    def add_task_log(self, task_id, **kwargs):
+        """Runtime sends a log entry for a task (streaming)."""
+        runtime = self._authenticate_runtime()
+        if not runtime:
+            return self._json_response({'error': 'Invalid API key'}, 401)
+
+        task = request.env['odoo.agent.task'].sudo().browse(task_id)
+        if not task.exists():
+            return self._json_response({'error': 'Task not found'}, 404)
+
+        if task.agent_id.runtime_id != runtime:
+            return self._json_response({'error': 'Task not assigned to this runtime'}, 403)
+
+        level = kwargs.get('level', 'info')
+        message = kwargs.get('message', '')
+        command = kwargs.get('command')
+        exit_code = kwargs.get('exit_code')
+
+        log = request.env['odoo.agent.log'].sudo().create({
+            'agent_task_id': task_id,
+            'level': level,
+            'message': message,
+            'command': command,
+            'exit_code': exit_code and int(exit_code),
+            'timestamp': datetime.now(),
+        })
+
+        return self._json_response({
+            'status': 'ok',
+            'log_id': log.id,
+        })
+
+    @http.route(
+        '/api/agent/task/<int:task_id>/logs',
+        type='http',
+        methods=['GET'],
+        auth='none',
+        csrf=False,
+    )
+    def get_task_logs(self, task_id, **kwargs):
+        """Get all logs for a task."""
+        runtime = self._authenticate_runtime()
+        if not runtime:
+            return self._json_response({'error': 'Invalid API key'}, 401)
+
+        task = request.env['odoo.agent.task'].sudo().browse(task_id)
+        if not task.exists():
+            return self._json_response({'error': 'Task not found'}, 404)
+
+        level = kwargs.get('level')
+        limit = int(kwargs.get('limit', 100))
+
+        domain = [('agent_task_id', '=', task_id)]
+        if level:
+            domain.append(('level', '=', level))
+
+        logs = request.env['odoo.agent.log'].sudo().search(domain, limit=limit)
+
+        log_data = []
+        for log in logs:
+            log_data.append({
+                'id': log.id,
+                'timestamp': str(log.timestamp),
+                'level': log.level,
+                'message': log.message,
+                'command': log.command,
+                'exit_code': log.exit_code,
+            })
+
+        return self._json_response({'logs': log_data})
 
     @http.route(
         '/api/agent/runtime/register',

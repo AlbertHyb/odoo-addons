@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Top menu -->
     <menuitem id="menu_agent_root" name="AI Agents"
         sequence="100" web_icon="odoo_agent,static/description/icon.png"/>
 
-    <!-- Agent Runtimes -->
     <menuitem id="menu_agent_runtime" name="Runtimes"
         parent="menu_agent_root" sequence="10"
         action="action_agent_runtime"/>
 
-    <!-- Agents -->
     <menuitem id="menu_agent" name="Agents"
         parent="menu_agent_root" sequence="20"
         action="action_agent"/>
 
-    <!-- Skills -->
     <menuitem id="menu_agent_skill" name="Skills"
         parent="menu_agent_root" sequence="30"
         action="action_agent_skill"/>
 
-    <!-- Tasks -->
     <menuitem id="menu_agent_task" name="Tasks"
         parent="menu_agent_root" sequence="40"
         action="action_agent_task"/>
 
-    <!-- Actions -->
+    <menuitem id="menu_agent_log" name="Execution Logs"
+        parent="menu_agent_root" sequence="50"
+        action="action_agent_log"/>
+
     <record id="action_agent_runtime" model="ir.actions.act_window">
         <field name="name">Runtimes</field>
         <field name="res_model">odoo.agent.runtime</field>
@@ -58,6 +56,15 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p>View AI Agent Tasks — tasks assigned to and executed by AI agents.</p>
+        </field>
+    </record>
+
+    <record id="action_agent_log" model="ir.actions.act_window">
+        <field name="name">Execution Logs</field>
+        <field name="res_model">odoo.agent.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>View detailed execution logs from AI agent tasks.</p>
         </field>
     </record>
 

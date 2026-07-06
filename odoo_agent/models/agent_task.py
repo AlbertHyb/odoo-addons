@@ -57,11 +57,23 @@ class AgentTask(models.Model):
     child_ids = fields.One2many(
         'odoo.agent.task', 'parent_id', string='Subtasks',
     )
+    log_ids = fields.One2many(
+        'odoo.agent.log', 'agent_task_id', string='Execution Logs',
+    )
+    log_count = fields.Integer(
+        string='Log Count',
+        compute='_compute_log_count',
+    )
     company_id = fields.Many2one(
         'res.company',
         string='Company',
         default=lambda self: self.env.company,
     )
+
+    @api.depends('log_ids')
+    def _compute_log_count(self):
+        for task in self:
+            task.log_count = len(task.log_ids)
 
     @api.model
     def get_pending_tasks(self, agent_ids=None, limit=10):
@@ -87,7 +99,6 @@ class AgentTask(models.Model):
         if result:
             vals['result'] = result
         self.write(vals)
-        # Update linked project.task if exists
         if self.task_id:
             self.task_id.message_post(
                 body=f'Agent <b>{self.agent_id.name}</b> completed task: {self.name}',
