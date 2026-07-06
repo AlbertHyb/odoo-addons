@@ -3,7 +3,7 @@
     <record id="action_agent_runtime" model="ir.actions.act_window">
         <field name="name">Runtimes</field>
         <field name="res_model">odoo.agent.runtime</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p>Manage AI Agent Runtimes — external machines that execute AI agents.</p>
         </field>
@@ -12,7 +12,7 @@
     <record id="action_agent" model="ir.actions.act_window">
         <field name="name">Agents</field>
         <field name="res_model">odoo.agent</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="help" type="html">
             <p>Manage AI Agents — configurable entities with instructions and skills.</p>
         </field>
@@ -21,7 +21,7 @@
     <record id="action_agent_skill" model="ir.actions.act_window">
         <field name="name">Skills</field>
         <field name="res_model">odoo.agent.skill</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p>Manage reusable AI Agent Skills — instruction packs that can be attached to agents.</p>
         </field>
@@ -30,7 +30,7 @@
     <record id="action_agent_task" model="ir.actions.act_window">
         <field name="name">Tasks</field>
         <field name="res_model">odoo.agent.task</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p>View AI Agent Tasks — tasks assigned to and executed by AI agents.</p>
         </field>
@@ -39,7 +39,7 @@
     <record id="action_agent_log" model="ir.actions.act_window">
         <field name="name">Execution Logs</field>
         <field name="res_model">odoo.agent.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p>View detailed execution logs from AI agent tasks.</p>
         </field>
