@@ -18,6 +18,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Skill tip:</strong>
+                        A skill should describe one concrete reusable capability, not a whole agent personality.
+                        Keep it short, testable, and specific so the runtime can compose several skills safely.
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
@@ -29,6 +34,10 @@
                         </group>
                     </group>
                     <group string="Instructions">
+                        <div class="alert alert-light" role="alert">
+                            Explain when to use this skill, required inputs, expected output, and guardrails.
+                            These instructions are injected into the agent prompt at execution time.
+                        </div>
                         <field name="instructions" nolabel="1"/>
                     </group>
                 </sheet>

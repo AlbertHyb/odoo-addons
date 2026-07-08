@@ -6,17 +6,21 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <field name="user_ids" position="after">
-                <field name="agent_id"
-                    options="{'no_create': True}"
-                    placeholder="Assign to AI agent..."/>
-                <field name="agent_status" widget="badge"/>
+                <field name="agent_id" options="{'no_create': True}" placeholder="Assign to AI agent..."/>
+                <field name="latest_execution_status" widget="badge" readonly="1"/>
+                <field name="latest_execution_id" readonly="1"/>
             </field>
             <div name="button_box" position="inside">
-                <button name="action_assign_agent" type="object"
-                    class="oe_stat_button" icon="fa-robot"
-                    string="AI Agent"
-                    help="Assign this task to an AI agent"/>
+                <button name="action_view_agent_executions" type="object" class="oe_stat_button" icon="fa-play-circle">
+                    <field name="execution_count" widget="statinfo" string="Executions"/>
+                </button>
+                <button name="action_view_agent_logs" type="object" class="oe_stat_button" icon="fa-list-alt" string="Agent Logs" invisible="not latest_execution_id"/>
             </div>
+            <xpath expr="//header" position="inside">
+                <button name="action_send_to_agent" type="object" string="Send to Agent" class="btn-primary" invisible="not agent_id"/>
+                <button name="action_retry_agent_execution" type="object" string="Retry Agent" invisible="not latest_execution_id"/>
+                <button name="action_cancel_agent_execution" type="object" string="Cancel Agent" invisible="latest_execution_status not in ('queued', 'running', 'waiting_input', 'cancel_requested')"/>
+            </xpath>
         </field>
     </record>
 
@@ -27,11 +31,60 @@
         <field name="arch" type="xml">
             <filter name="my_tasks" position="after">
                 <separator/>
-                <filter name="ai_assigned" string="AI Assigned"
-                    domain="[('agent_id', '!=', False)]"/>
-                <filter name="ai_not_assigned" string="Not AI Assigned"
-                    domain="[('agent_id', '=', False)]"/>
+                <filter name="ai_assigned" string="Agent Assigned" domain="[('agent_id', '!=', False)]"/>
+                <filter name="ai_working" string="Agent Working" domain="[('latest_execution_status', 'in', ['queued', 'running', 'waiting_input', 'cancel_requested'])]"/>
+                <filter name="ai_failed" string="Agent Failed" domain="[('latest_execution_status', '=', 'failed')]"/>
+                <filter name="ai_done" string="Agent Done" domain="[('latest_execution_status', '=', 'completed')]"/>
+                <group expand="0" string="Agent">
+                    <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_agent_status" string="Agent Status" context="{'group_by': 'latest_execution_status'}"/>
+                </group>
             </filter>
         </field>
     </record>
+
+
+    <record id="view_project_task_kanban_inherit_agent" model="ir.ui.view">
+        <field name="name">project.task.kanban.inherit.agent</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/field[@name='state']" position="after">
+                <field name="agent_id"/>
+                <field name="latest_execution_status"/>
+                <field name="latest_execution_id"/>
+                <field name="execution_count"/>
+            </xpath>
+            <xpath expr="//t[@t-name='card']//field[@name='name']" position="after">
+                <div t-if="record.agent_id.raw_value" class="d-flex align-items-center justify-content-between gap-1 mt-1 mb-1">
+                    <span class="badge rounded-pill text-bg-light border text-truncate" title="Assigned agent">
+                        <i class="fa fa-magic me-1" aria-label="Agent"/>
+                        <field name="agent_id"/>
+                    </span>
+                    <span t-if="['queued', 'running', 'waiting_input', 'cancel_requested'].includes(record.latest_execution_status.raw_value)"
+                          class="badge rounded-pill text-bg-primary" title="Agent is working on this task">
+                        <i class="fa fa-play-circle me-1" aria-label="Working"/>
+                        Working
+                    </span>
+                    <span t-elif="record.latest_execution_status.raw_value == 'failed'"
+                          class="badge rounded-pill text-bg-danger" title="Latest agent execution failed">
+                        <i class="fa fa-exclamation-triangle me-1" aria-label="Failed"/>
+                        Failed
+                    </span>
+                    <span t-elif="record.latest_execution_status.raw_value == 'completed'"
+                          class="badge rounded-pill text-bg-success" title="Latest agent execution completed">
+                        <i class="fa fa-check me-1" aria-label="Done"/>
+                        Done
+                    </span>
+                </div>
+            </xpath>
+            <xpath expr="//t[@t-name='card']//footer/div[1]" position="inside">
+                <span t-if="record.execution_count.raw_value" class="badge rounded-pill text-bg-secondary" title="Agent executions">
+                    <i class="fa fa-bolt me-1" aria-label="Executions"/>
+                    <field name="execution_count"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

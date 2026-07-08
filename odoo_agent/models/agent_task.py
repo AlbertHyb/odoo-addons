@@ -1,6 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from markupsafe import Markup, escape
+
+from odoo import _, api, fields, models
+from odoo.tools import html2plaintext
 
 
 class AgentTask(models.Model):
@@ -75,6 +78,24 @@ class AgentTask(models.Model):
         for task in self:
             task.log_count = len(task.log_ids)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('description'):
+                vals['description'] = self._clean_description_text(vals['description'])
+        return super().create(vals_list)
+
+    def write(self, vals):
+        if vals.get('description'):
+            vals = dict(vals)
+            vals['description'] = self._clean_description_text(vals['description'])
+        return super().write(vals)
+
+    @api.model
+    def _clean_description_text(self, description):
+        """Store legacy task descriptions as readable text, not raw HTML."""
+        return html2plaintext(description).strip()
+
     @api.model
     def get_pending_tasks(self, agent_ids=None, limit=10):
         """Get pending tasks for polling by runtimes."""
@@ -103,7 +124,10 @@ class AgentTask(models.Model):
         self._sync_project_task_stage()
         if self.task_id:
             self.task_id.message_post(
-                body=f'Agent <b>{self.agent_id.name}</b> completed task: {self.name}',
+                body=Markup(_('Agent <b>%s</b> completed task: %s')) % (
+                    escape(self.agent_id.name),
+                    escape(self.name),
+                ),
                 subject=f'Task completed: {self.name}',
             )
 
@@ -119,7 +143,10 @@ class AgentTask(models.Model):
         self._sync_project_task_stage()
         if self.task_id:
             self.task_id.message_post(
-                body=f'Agent <b>{self.agent_id.name}</b> failed task: {self.name}',
+                body=Markup(_('Agent <b>%s</b> failed task: %s')) % (
+                    escape(self.agent_id.name),
+                    escape(self.name),
+                ),
                 subject=f'Task failed: {self.name}',
             )
 

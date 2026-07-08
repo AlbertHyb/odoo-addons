@@ -1,80 +1,138 @@
 # Odoo AI Agent System
 
-Replicates the Multica agent architecture natively within Odoo 18.0.
+Odoo AI Agent System turns Odoo 18 Project into an operational control layer for AI agents. Teams can assign a Project task to an agent, execute it on an external runtime, stream logs, retry or cancel work, and keep the final result attached to the task history.
+
+This is not a chat widget. It is an auditable execution system for agent teams inside Odoo.
+
+## What you get
+
+- Assign agents directly from Odoo Project tasks.
+- Run work on external Linux, macOS, or Windows machines.
+- Track execution states: `queued`, `running`, `waiting_input`, `completed`, `failed`, and `cancelled`.
+- Stream logs and final results back into Odoo.
+- Configure engines, CLI commands, instructions, skills, MCP servers, timeouts, retries, and concurrency.
+- Delegate work to other agents from prompts with `@mentions`.
+- Keep access controlled with Odoo groups, companies, Project visibility, and runtime-scoped API keys.
+
+## Quick path
+
+1. Install this addon on Odoo 18.
+2. Assign users to **Agent User** or **Agent Admin**.
+3. Create a runtime in **AI Agents → Runtimes** and generate an API key.
+4. Install the runtime daemon on the machine that will execute agent CLIs.
+5. Create an agent with runtime, engine, CLI command, instructions, skills, and limits.
+6. Assign that agent to a Project task and click **Send to Agent**.
+7. Watch status, logs, result, retries, cancellation, and chatter updates in Odoo.
 
 ## Architecture
 
+```text
+Odoo 18
+├── project.task              → Native task workflow: assign, send, retry, cancel, inspect
+├── odoo.agent                → Agent configuration and operational limits
+├── odoo.agent.execution      → One auditable run for a task
+├── odoo.agent.log            → Runtime logs for each execution
+├── odoo.agent.runtime        → External runtime identity and API key
+├── odoo.agent.skill          → Reusable instruction packs
+└── odoo.agent.mcp.server     → MCP tool/data-source configuration
+
+External runtime
+└── polls Odoo → receives execution → runs CLI → streams logs → completes/fails
 ```
-Odoo 18.0
-├── odoo.agent.runtime  → External machines (N100, Mac Mini, etc.)
-├── odoo.agent          → AI agents with instructions and skills
-├── odoo.agent.skill    → Reusable instruction packs
-├── odoo.agent.task     → Tasks assigned to AI agents
-└── project.task        → Inherited: assign AI agents to Odoo tasks
 
-External Runtime (Python daemon)
-├── Polls Odoo API for pending tasks
-├── Executes agent CLI (Hermes/OpenCode/OpenClaw)
-└── Reports results back to Odoo
+## Supported engines
+
+The addon supports engine presets and custom commands. Production behavior is driven by the agent's `cli_command`, so any CLI-based agent can be connected when the runtime host can execute it.
+
+| Engine | Typical use |
+| --- | --- |
+| Codex | Code and repository work through a Codex-compatible CLI. |
+| Hermes | Hermes gateway/runtime setups. |
+| OpenCode | OpenCode CLI execution. |
+| OpenClaw | OpenClaw agent execution. |
+| Claude Code | Claude Code CLI execution. |
+| Custom CLI | Any local agent command available on the runtime host. |
+
+Example commands:
+
+```text
+opencode run --instruction {instruction}
+hermes run --context {instruction}
+openclaw agent --task {task_name} --context {instruction}
+claude --print {instruction}
 ```
 
-## Installation
+## Runtime daemon
 
-1. Copy `odoo_agent/` to your Odoo addons directory
-2. Update addons list and install the module
-3. Go to AI Agents > Runtimes and register your external machines
-4. Create agents and assign them to runtimes
-5. Start the runtime daemon on each machine
+The external runtime daemon lives in a separate repository/package. It is responsible for:
 
-## API Endpoints
+- reading Odoo URL and runtime API key;
+- registering heartbeat and capabilities;
+- polling queued executions;
+- building the final instruction from Odoo configuration;
+- executing the configured local CLI;
+- streaming logs;
+- reporting completion, failure, or cancellation.
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | /api/agent/runtime/heartbeat | API Key | Runtime heartbeat |
-| GET | /api/agent/runtime/poll | API Key | Poll for pending tasks |
-| POST | /api/agent/task/{id}/start | API Key | Start a task |
-| POST | /api/agent/task/{id}/complete | API Key | Complete a task |
-| POST | /api/agent/runtime/register | Odoo User | Register a new runtime |
+See:
 
-## Models
+- [`docs/runtime-installation.md`](docs/runtime-installation.md)
+- [`docs/runtime-contract.md`](docs/runtime-contract.md)
 
-### odoo.agent.runtime
-External machine running the daemon. Fields: name, machine_id, ip_address, status (offline/online/busy), last_seen, api_key, version, device_info.
+## Documentation
 
-### odoo.agent
-AI agent entity. Fields: name, description, instructions, runtime_id, model, status (idle/working/error), avatar, skill_ids, max_concurrent_tasks, user_id.
+| Document | Purpose |
+| --- | --- |
+| [`docs/installation.md`](docs/installation.md) | Install and configure the Odoo addon. |
+| [`docs/runtime-installation.md`](docs/runtime-installation.md) | Install the runtime on Linux, macOS, and Windows. |
+| [`docs/user-guide.md`](docs/user-guide.md) | Daily workflow for Project users and operators. |
+| [`docs/configuration.md`](docs/configuration.md) | Agents, skills, MCP servers, timeouts, retries, and engines. |
+| [`docs/runtime-contract.md`](docs/runtime-contract.md) | Runtime API endpoints and payloads. |
+| [`docs/agent-mentions.md`](docs/agent-mentions.md) | Multi-agent delegation with `@mentions`. |
+| [`docs/security.md`](docs/security.md) | Groups, record rules, API keys, companies, and safe operation. |
+| [`docs/development.md`](docs/development.md) | Development, tests, validation, and contribution workflow. |
+| [`docs/release-checklist.md`](docs/release-checklist.md) | Public release checklist. |
+| [`docs/demo-script.md`](docs/demo-script.md) | Demo data, screenshots, and video script. |
 
-### odoo.agent.skill
-Reusable instruction pack. Fields: name, description, instructions, category (development/devops/analysis/communication/custom).
-
-### odoo.agent.task
-Task assigned to an AI agent. Fields: name, description, agent_id, project_id, task_id, status (pending/in_progress/completed/failed/cancelled), result, error_message.
-
-## Runtime Daemon
+## Installation summary
 
 ```bash
-cd odoo-agent-runtime
-pip install -r requirements.txt
-
-# Configure
-export ODOO_URL=https://odoo.example.com
-export API_KEY=your-runtime-api-key
-export RUNTIME_NAME=n100-dev
-
-# Run
-python daemon.py
+# Add this repository to your Odoo addons path, then update apps.
+odoo-bin -d <database> -i odoo_agent --stop-after-init
 ```
 
-## Development
+Then install the runtime and connect it with the generated API key.
 
-### Adding new agent CLIs
+## Security model
 
-Edit `_run_agent_cli()` in `odoo-agent-runtime/daemon.py` to add new CLI mappings.
+| Group | Purpose |
+| --- | --- |
+| Agent User | Operate agent executions and read operational records. |
+| Agent Admin | Manage runtimes, API keys, agents, skills, MCP servers, and mappings. |
 
-### Extending the API
+Runtime API keys are scoped to one runtime. A runtime can only operate on executions assigned to that runtime.
 
-Add new routes in `controllers/agent_api.py` following the existing pattern.
+## Validation
+
+Static validation without a database:
+
+```bash
+python3 scripts/validate_addon.py
+python3 -m compileall -q odoo_agent
+```
+
+Full validation with Odoo:
+
+```bash
+odoo-bin -d <database> -i odoo_agent --test-enable --stop-after-init
+```
+
+## Public readiness status
+
+The module is structured for a public release, but before publishing a production tag you should validate it on a real Odoo 18 database with the runtime daemon connected end-to-end.
+
+See [`docs/release-checklist.md`](docs/release-checklist.md).
 
 ## License
 
-LGPL-3
+LGPL-3.

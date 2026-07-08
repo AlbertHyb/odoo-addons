@@ -8,9 +8,10 @@
                 <field name="name"/>
                 <field name="status" widget="badge"/>
                 <field name="runtime_id"/>
+                <field name="engine"/>
                 <field name="model"/>
-                <field name="active_task_count"/>
-                <field name="max_concurrent_tasks"/>
+                <field name="active_execution_count"/>
+                <field name="max_concurrent_executions"/>
             </list>
         </field>
     </record>
@@ -26,21 +27,10 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
-                            <div class="o_kanban_image">
-                                <img t-att-src="kanban_image('odoo.agent', 'avatar', record.id.raw_value)"
-                                    alt="Agent" style="width:64px;height:64px;border-radius:50%;"
-                                    />
-                            </div>
                             <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title">
-                                    <field name="name"/>
-                                </strong>
-                                <div>
-                                    <field name="status" widget="badge"/>
-                                </div>
-                                <div t-if="record.runtime_id.raw_value">
-                                    Runtime: <field name="runtime_id"/>
-                                </div>
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div><field name="status" widget="badge"/></div>
+                                <div>Runtime: <field name="runtime_id"/></div>
                             </div>
                         </div>
                     </t>
@@ -55,55 +45,79 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="status" widget="badge"
-                        />
+                    <field name="status" widget="badge"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(action_agent_task)d" type="action"
-                            class="oe_stat_button" icon="fa-tasks">
-                            <div class="o_stat_info">
-                                <field name="active_task_count"/>
-                                <span class="o_stat_text">Active Tasks</span>
-                            </div>
+                        <button name="action_view_executions" type="object" class="oe_stat_button" icon="fa-play-circle">
+                            <field name="active_execution_count" widget="statinfo" string="Active Executions"/>
                         </button>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Agent setup tip:</strong>
+                        Choose the runtime machine, then choose the engine/CLI that runtime can execute.
+                        Use Custom CLI when the runtime already knows how to call a proprietary agent.
                     </div>
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="mention_key" placeholder="qa-agent"/>
                             <field name="description"/>
                             <field name="runtime_id"/>
+                            <field name="engine"/>
+                            <field name="cli_command"/>
                             <field name="model"/>
                         </group>
                         <group>
-                            <field name="max_concurrent_tasks"/>
+                            <field name="max_concurrent_executions"/>
+                            <field name="timeout_seconds"/>
+                            <field name="retry_limit"/>
                             <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                             <field name="active"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="instructions" string="Instructions">
+                            <div class="alert alert-light" role="alert">
+                                Write the agent's operating rules here: role, boundaries, project context,
+                                expected output format, and what it must never do without human approval.
+                                Other agents can mention this agent with its @handle.
+                            </div>
                             <field name="instructions" nolabel="1"/>
                         </page>
                         <page name="skills" string="Skills">
-                            <field name="skill_ids">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="category"/>
-                                </list>
-                            </field>
+                            <div class="alert alert-light" role="alert">
+                                Skills are reusable capability packs injected into the final prompt.
+                                Add only the skills this agent needs; too many skills make executions noisy and harder to audit.
+                            </div>
+                            <field name="skill_ids" widget="many2many_tags"/>
                         </page>
-                        <page name="tasks" string="Tasks">
-                            <field name="task_ids">
+                        <page name="mcp" string="MCP Servers">
+                            <div class="alert alert-light" role="alert">
+                                MCP servers expose tools and data sources to the agent runtime.
+                                Assign only trusted servers and verify their commands, URLs, and environment variables on the runtime host.
+                            </div>
+                            <field name="mcp_server_ids" widget="many2many_tags"/>
+                        </page>
+                        <page name="executions" string="Executions">
+                            <div class="alert alert-light" role="alert">
+                                Each execution is one auditable run against a Project task: queued, running,
+                                waiting for input, completed, failed, or cancelled.
+                            </div>
+                            <field name="execution_ids">
                                 <list>
                                     <field name="name"/>
                                     <field name="status" widget="badge"/>
+                                    <field name="runtime_id"/>
+                                    <field name="task_id"/>
                                     <field name="create_date"/>
                                 </list>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -115,15 +129,13 @@
             <search>
                 <field name="name"/>
                 <field name="runtime_id"/>
-                <filter name="idle" string="Idle"
-                    domain="[('status', '=', 'idle')]"/>
-                <filter name="working" string="Working"
-                    domain="[('status', '=', 'working')]"/>
+                <field name="engine"/>
+                <filter name="idle" string="Idle" domain="[('status', '=', 'idle')]"/>
+                <filter name="working" string="Working" domain="[('status', '=', 'working')]"/>
                 <group expand="0" string="Group By">
-                    <filter name="group_status" string="Status"
-                        context="{'group_by': 'status'}"/>
-                    <filter name="group_runtime" string="Runtime"
-                        context="{'group_by': 'runtime_id'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                    <filter name="group_runtime" string="Runtime" context="{'group_by': 'runtime_id'}"/>
+                    <filter name="group_engine" string="Engine" context="{'group_by': 'engine'}"/>
                 </group>
             </search>
         </field>

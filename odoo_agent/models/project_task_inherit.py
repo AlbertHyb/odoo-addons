@@ -1,6 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools import html2plaintext
 
 
 class ProjectTask(models.Model):
@@ -11,68 +13,114 @@ class ProjectTask(models.Model):
         string='AI Agent',
         ondelete='set null',
         tracking=True,
+        check_company=True,
         help='Assign this task to an AI agent',
+    )
+    execution_ids = fields.One2many(
+        'odoo.agent.execution',
+        'task_id',
+        string='Agent Executions',
+    )
+    latest_execution_id = fields.Many2one(
+        'odoo.agent.execution',
+        string='Latest Agent Execution',
+        ondelete='set null',
+        copy=False,
+        check_company=True,
+    )
+    latest_execution_status = fields.Selection(
+        related='latest_execution_id.status',
+        string='Latest Agent Status',
+        readonly=True,
+    )
+    execution_count = fields.Integer(
+        string='Agent Execution Count',
+        compute='_compute_execution_count',
     )
     agent_task_id = fields.Many2one(
         'odoo.agent.task',
-        string='Agent Task',
+        string='Legacy Agent Task',
         ondelete='set null',
         copy=False,
-        help='Linked agent task for tracking execution',
+        help='Legacy tracking field. New flows use Agent Executions.',
     )
     agent_status = fields.Selection(
-        related='agent_task_id.status',
+        related='latest_execution_id.status',
         string='Agent Status',
         readonly=True,
     )
 
-    def action_assign_agent(self):
-        """Assign this task to the selected agent."""
+    @api.depends('execution_ids')
+    def _compute_execution_count(self):
+        for task in self:
+            task.execution_count = len(task.execution_ids)
+
+    def _agent_execution_prompt(self):
         self.ensure_one()
-        if not self.agent_id:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Assign AI Agent',
-                'res_model': 'odoo.agent',
-                'view_mode': 'form',
-                'target': 'new',
-            }
-        # Create agent task
-        agent_task = self.env['odoo.agent.task'].create({
-            'name': self.name,
-            'description': self.description or '',
-            'agent_id': self.agent_id.id,
-            'project_id': self.project_id.id,
-            'task_id': self.id,
-        })
-        self.agent_task_id = agent_task.id
-        # Move to first non-folded stage (New/Inbox)
-        first_stage = self.env['project.task.type'].search([
-            ('fold', '=', False),
-        ], order='sequence', limit=1)
-        if first_stage:
-            self.stage_id = first_stage.id
-        self.message_post(
-            body=f'Task assigned to AI agent: <b>{self.agent_id.name}</b>',
-            subject='Task assigned to AI agent',
-        )
+        parts = [self.name or '']
+        if self.description:
+            parts.append(html2plaintext(self.description).strip())
+        return '\n\n'.join(parts)
+
+    def action_send_to_agent(self):
+        for task in self:
+            if not task.agent_id:
+                raise UserError(_('Assign an AI agent before sending the task.'))
+            if not task.agent_id.runtime_id:
+                raise UserError(_('The selected AI agent must have a runtime.'))
+            execution = self.env['odoo.agent.execution'].create({
+                'name': task.name or _('Project Task'),
+                'prompt': task._agent_execution_prompt(),
+                'agent_id': task.agent_id.id,
+                'runtime_id': task.agent_id.runtime_id.id,
+                'project_id': task.project_id.id,
+                'task_id': task.id,
+                'requested_by_id': self.env.user.id,
+                'company_id': task.company_id.id or self.env.company.id,
+            })
+            task.latest_execution_id = execution.id
         return True
 
-    def _update_stage_from_agent_status(self, agent_status):
-        """Update project.task stage based on agent task status."""
+    def action_assign_agent(self):
+        return self.action_send_to_agent()
+
+    def action_retry_agent_execution(self):
         self.ensure_one()
-        stage_map = {
-            'pending': 'New',
-            'in_progress': 'In Progress',
-            'completed': 'Done',
-            'failed': 'Cancelled',
-            'cancelled': 'Cancelled',
+        if not self.latest_execution_id:
+            return self.action_send_to_agent()
+        execution = self.latest_execution_id.action_retry()
+        self.latest_execution_id = execution.id
+        return True
+
+    def action_cancel_agent_execution(self):
+        for task in self:
+            if task.latest_execution_id:
+                task.latest_execution_id.action_request_cancel()
+        return True
+
+    def action_view_agent_logs(self):
+        self.ensure_one()
+        execution_ids = self.execution_ids.ids
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Agent Logs'),
+            'res_model': 'odoo.agent.log',
+            'view_mode': 'list,form',
+            'domain': [('execution_id', 'in', execution_ids)],
+            'context': {'default_execution_id': self.latest_execution_id.id},
         }
-        target_stage_name = stage_map.get(agent_status)
-        if not target_stage_name:
-            return
-        stage = self.env['project.task.type'].search([
-            ('name', '=', target_stage_name),
-        ], limit=1)
-        if stage:
-            self.stage_id = stage.id
+
+    def action_view_agent_executions(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Agent Executions'),
+            'res_model': 'odoo.agent.execution',
+            'view_mode': 'list,form',
+            'domain': [('task_id', '=', self.id)],
+            'context': {
+                'default_task_id': self.id,
+                'default_project_id': self.project_id.id,
+                'default_agent_id': self.agent_id.id,
+            },
+        }

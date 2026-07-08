@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class AgentStageMap(models.Model):
@@ -8,16 +8,21 @@ class AgentStageMap(models.Model):
     _description = 'Agent Status to Project Stage Mapping'
     _order = 'agent_status, id'
     _rec_name = 'display_name'
+    _check_company_auto = True
 
     agent_status = fields.Selection(
         [
-            ('pending', 'Pending'),
-            ('in_progress', 'In Progress'),
+            ('queued', 'Queued'),
+            ('running', 'Running'),
+            ('waiting_input', 'Waiting for Input'),
             ('completed', 'Completed'),
             ('failed', 'Failed'),
+            ('cancel_requested', 'Cancel Requested'),
             ('cancelled', 'Cancelled'),
+            ('pending', 'Legacy Pending'),
+            ('in_progress', 'Legacy In Progress'),
         ],
-        string='Agent Task Status',
+        string='Agent Status',
         required=True,
         index=True,
     )
@@ -32,13 +37,10 @@ class AgentStageMap(models.Model):
         'res.company',
         string='Company',
         default=lambda self: self.env.company,
+        required=True,
+        index=True,
     )
-
-    display_name = fields.Char(
-        string='Display Name',
-        compute='_compute_display_name',
-        store=True,
-    )
+    display_name = fields.Char(string='Display Name', compute='_compute_display_name', store=True)
 
     _sql_constraints = [
         (
@@ -58,14 +60,19 @@ class AgentStageMap(models.Model):
         return dict(self._fields['agent_status'].selection).get(self.agent_status, self.agent_status)
 
     @api.model
-    def get_stage_for_status(self, agent_status, company_id=None):
-        """Get the project stage for a given agent status, using configurable mapping."""
+    def get_stage_for_status(self, agent_status, company_id=None, project=None):
         if not company_id:
             company_id = self.env.company.id
         mapping = self.search([
             ('agent_status', '=', agent_status),
             ('company_id', '=', company_id),
         ], limit=1)
-        if mapping:
+        if mapping and self._stage_matches_project(mapping.stage_id, project):
             return mapping.stage_id
         return self.env['project.task.type']
+
+    @api.model
+    def _stage_matches_project(self, stage, project):
+        if not stage or not project:
+            return bool(stage)
+        return not stage.project_ids or project in stage.project_ids
