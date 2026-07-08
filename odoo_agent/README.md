@@ -88,6 +88,7 @@ See:
 | [`docs/user-guide.md`](docs/user-guide.md) | Daily workflow for Project users and operators. |
 | [`docs/configuration.md`](docs/configuration.md) | Agents, skills, MCP servers, timeouts, retries, and engines. |
 | [`docs/runtime-contract.md`](docs/runtime-contract.md) | Runtime API endpoints and payloads. |
+| [`docs/compatibility.md`](docs/compatibility.md) | Addon/runtime version compatibility. |
 | [`docs/agent-mentions.md`](docs/agent-mentions.md) | Multi-agent delegation with `@mentions`. |
 | [`docs/security.md`](docs/security.md) | Groups, record rules, API keys, companies, and safe operation. |
 | [`docs/development.md`](docs/development.md) | Development, tests, validation, and contribution workflow. |
