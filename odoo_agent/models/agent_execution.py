@@ -441,6 +441,8 @@ class AgentExecution(models.Model):
         }
         self.env['bus.bus']._sendone(f'odoo_agent.execution.{self.id}', 'odoo_agent', payload)
         self.env['bus.bus']._sendone(f'odoo_agent.agent.{self.agent_id.id}', 'odoo_agent', payload)
+        if self.task_id:
+            self.env['bus.bus']._sendone(f'odoo_agent.project_task.{self.task_id.id}', 'odoo_agent', payload)
 
     def _sync_project_task_stage(self):
         self.ensure_one()

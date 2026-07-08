@@ -136,6 +136,8 @@ class TestAgentExecution(AgentTestMixin):
         self.assertIn('chat_message_created', event_names)
         self.assertIn('log_created', event_names)
         self.assertIn('execution_updated', event_names)
+        targets = {call[0] for call in calls}
+        self.assertIn(f'odoo_agent.project_task.{self.task.id}', targets)
 
     def test_execution_retry_creates_child_attempt(self):
         execution = self.env['odoo.agent.execution'].create({

@@ -61,7 +61,9 @@ Legacy `tasks` remains only as compatibility fallback.
 
 Chat messages are executed through the same `odoo.agent.execution` lifecycle used by Project tasks.
 
-When a user sends a chat message through `POST /api/agent/{agent_id}/chat`, Odoo creates:
+The main Odoo UI creates these messages from the Project task **Agent Communications** tab. External clients can use `POST /api/agent/{agent_id}/chat`.
+
+When a user sends a chat message, Odoo creates:
 
 - one `odoo.agent.chat.message` with `author_type=user`;
 - one queued `odoo.agent.execution` with `source=chat`;
@@ -113,4 +115,5 @@ Channels use these names:
 ```text
 odoo_agent.agent.{agent_id}
 odoo_agent.execution.{execution_id}
+odoo_agent.project_task.{project_task_id}
 ```

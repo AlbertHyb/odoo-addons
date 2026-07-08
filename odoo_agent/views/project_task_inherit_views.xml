@@ -14,12 +14,55 @@
                 <button name="action_view_agent_executions" type="object" class="oe_stat_button" icon="fa-play-circle">
                     <field name="execution_count" widget="statinfo" string="Executions"/>
                 </button>
+                <button name="action_view_agent_communications" type="object" class="oe_stat_button" icon="fa-comments">
+                    <field name="agent_chat_message_count" widget="statinfo" string="Agent Messages"/>
+                </button>
                 <button name="action_view_agent_logs" type="object" class="oe_stat_button" icon="fa-list-alt" string="Agent Logs" invisible="not latest_execution_id"/>
             </div>
             <xpath expr="//header" position="inside">
                 <button name="action_send_to_agent" type="object" string="Send to Agent" class="btn-primary" invisible="not agent_id"/>
                 <button name="action_retry_agent_execution" type="object" string="Retry Agent" invisible="not latest_execution_id"/>
                 <button name="action_cancel_agent_execution" type="object" string="Cancel Agent" invisible="latest_execution_status not in ('queued', 'running', 'waiting_input', 'cancel_requested')"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Agent Communications" name="agent_communications">
+                    <div class="alert alert-info" role="alert">
+                        Use this area to talk with agents in the context of this task. Each message creates a traceable
+                        chat execution, so the runtime receives the task context, conversation history, logs, status,
+                        and final result.
+                    </div>
+                    <group string="Send Message">
+                        <group>
+                            <field name="agent_chat_composer_agent_id"
+                                   options="{'no_create': True}"
+                                   placeholder="Use assigned agent if empty"/>
+                        </group>
+                        <group>
+                            <field name="agent_chat_composer_body"
+                                   nolabel="1"
+                                   placeholder="Write a message for the agent..."/>
+                            <button name="action_send_agent_chat_message"
+                                    type="object"
+                                    string="Send Message"
+                                    class="btn-primary"/>
+                        </group>
+                    </group>
+                    <field name="agent_chat_message_ids" nolabel="1" readonly="1">
+                        <list string="Agent Communications"
+                              create="0"
+                              edit="0"
+                              delete="0"
+                              decoration-info="author_type == 'agent'"
+                              decoration-muted="delivery_state == 'failed'">
+                            <field name="timestamp"/>
+                            <field name="author_type" widget="badge"/>
+                            <field name="agent_id"/>
+                            <field name="content"/>
+                            <field name="delivery_state" widget="badge"/>
+                            <field name="execution_id"/>
+                        </list>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>
@@ -54,6 +97,7 @@
                 <field name="latest_execution_status"/>
                 <field name="latest_execution_id"/>
                 <field name="execution_count"/>
+                <field name="agent_chat_message_count"/>
             </xpath>
             <xpath expr="//t[@t-name='card']//field[@name='name']" position="after">
                 <div t-if="record.agent_id.raw_value" class="d-flex align-items-center justify-content-between gap-1 mt-1 mb-1">
@@ -82,6 +126,10 @@
                 <span t-if="record.execution_count.raw_value" class="badge rounded-pill text-bg-secondary" title="Agent executions">
                     <i class="fa fa-bolt me-1" aria-label="Executions"/>
                     <field name="execution_count"/>
+                </span>
+                <span t-if="record.agent_chat_message_count.raw_value" class="badge rounded-pill text-bg-light border" title="Agent messages">
+                    <i class="fa fa-comments me-1" aria-label="Agent messages"/>
+                    <field name="agent_chat_message_count"/>
                 </span>
             </xpath>
         </field>

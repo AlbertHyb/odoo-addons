@@ -77,3 +77,30 @@ class TestProjectTaskAgentFlow(AgentTestMixin):
 
         self.assertEqual(action['res_model'], 'odoo.agent.log')
         self.assertIn(('execution_id', 'in', self.task.execution_ids.ids), action['domain'])
+
+    def test_task_agent_communication_creates_chat_execution(self):
+        self.task.agent_chat_composer_body = 'Can you review the acceptance criteria?'
+
+        self.task.action_send_agent_chat_message()
+
+        message = self.task.agent_chat_message_ids[0]
+        execution = message.execution_id
+        self.assertEqual(message.project_task_id, self.task)
+        self.assertEqual(message.agent_id, self.agent)
+        self.assertEqual(message.author_type, 'user')
+        self.assertEqual(message.delivery_state, 'queued')
+        self.assertEqual(execution.source, 'chat')
+        self.assertEqual(execution.task_id, self.task)
+        self.assertEqual(execution.chat_message_id, message)
+        self.assertEqual(self.task.latest_execution_id, execution)
+        self.assertFalse(self.task.agent_chat_composer_body)
+
+    def test_task_agent_communication_requires_body(self):
+        with self.assertRaises(UserError):
+            self.task.action_send_agent_chat_message()
+
+    def test_task_agent_communication_action_is_scoped_to_task(self):
+        action = self.task.action_view_agent_communications()
+
+        self.assertEqual(action['res_model'], 'odoo.agent.chat.message')
+        self.assertIn(('project_task_id', '=', self.task.id), action['domain'])

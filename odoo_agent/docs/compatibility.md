@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | `18.0.1.4.x` | `>=0.1.0 <0.2.0` | First public execution baseline. |
 | `18.0.1.5.x` | `>=0.2.0 <0.3.0` | Chat executions and Odoo bus notifications. |
+| `18.0.1.6.x` | `>=0.2.0 <0.3.0` | Task-context Agent Communications UI on top of chat executions. |
 
 ## Compatibility rules
 

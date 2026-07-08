@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class AgentChatMessage(models.Model):
@@ -121,6 +122,43 @@ class AgentChatMessage(models.Model):
         })
 
     @api.model
+    def create_user_execution(self, agent, content, project_task=None, name=None):
+        """Create a traceable chat execution from a user message."""
+        if not content:
+            raise UserError(_('Write a message before sending it to the agent.'))
+        if not agent:
+            raise UserError(_('Select an AI agent before sending a message.'))
+        if not agent.runtime_id:
+            raise UserError(_('The selected AI agent must have a runtime.'))
+
+        message = self.send_user_message(
+            agent.id,
+            content,
+            project_task_id=project_task.id if project_task else None,
+        )
+        execution = self.env['odoo.agent.execution'].create({
+            'name': name or content[:80] or agent.display_name,
+            'prompt': content,
+            'agent_id': agent.id,
+            'runtime_id': agent.runtime_id.id,
+            'project_id': project_task.project_id.id if project_task else False,
+            'task_id': project_task.id if project_task else False,
+            'requested_by_id': self.env.user.id,
+            'company_id': (
+                project_task.company_id.id
+                if project_task and project_task.company_id
+                else agent.company_id.id or self.env.company.id
+            ),
+            'source': 'chat',
+            'chat_message_id': message.id,
+        })
+        message.write({
+            'execution_id': execution.id,
+            'delivery_state': 'queued',
+        })
+        return message, execution
+
+    @api.model
     def send_agent_message(self, agent_id, content, task_id=None, project_task_id=None, execution_id=None, author_id=None):
         """Send a message from an agent to a user."""
         return self.create({
@@ -172,6 +210,12 @@ class AgentChatMessage(models.Model):
         if self.execution_id:
             self.env['bus.bus']._sendone(
                 f'odoo_agent.execution.{self.execution_id.id}',
+                'odoo_agent',
+                payload,
+            )
+        if self.project_task_id:
+            self.env['bus.bus']._sendone(
+                f'odoo_agent.project_task.{self.project_task_id.id}',
                 'odoo_agent',
                 payload,
             )

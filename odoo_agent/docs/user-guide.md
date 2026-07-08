@@ -8,8 +8,9 @@ This guide explains the daily workflow for Project users and agent operators.
 2. Assign an agent.
 3. Click **Send to Agent**.
 4. Watch the status badge.
-5. Open logs when needed.
-6. Retry, cancel, or review the final result.
+5. Use **Agent Communications** to talk with the agent inside the task.
+6. Open logs when needed.
+7. Retry, cancel, or review the final result.
 
 ## Assign an agent
 
@@ -91,15 +92,32 @@ Agents are more useful when tasks include objective, scope, constraints, and exp
 
 ## Chat with agents
 
-Agent chat uses the same execution system as Project tasks. When you send a message to an agent, Odoo creates a queued chat execution so the runtime can process it with full traceability.
+The primary chat experience lives inside the Project task, in the **Agent Communications** tab.
+
+Use it for follow-up instructions, questions, reviews, and agent-to-user progress messages without leaving the task context.
+
+Agent communications use the same execution system as Project tasks. When you send a message to an agent, Odoo creates a queued chat execution so the runtime can process it with full traceability.
 
 Flow:
 
-1. User sends a chat message to an agent.
+1. User opens a Project task.
+2. User writes a message in **Agent Communications**.
+3. Odoo creates a chat message linked to the task.
+4. Odoo creates a queued chat execution.
+5. Runtime polls the execution.
+6. Runtime streams logs and may send intermediate messages.
+7. Runtime completes the execution.
+8. Odoo creates the final agent reply from the result.
+
+The regular Odoo chatter remains useful for audit events and followers. The **Agent Communications** tab is the operational conversation with agents.
+
+Use **AI Agents → Chats** to inspect all messages globally, including delivery state, linked execution, and related Project task.
+
+API flow:
+
+1. External UI sends a chat message to an agent.
 2. Odoo creates a chat message and a queued execution.
 3. Runtime polls the execution.
 4. Runtime streams logs and may send intermediate messages.
 5. Runtime completes the execution.
 6. Odoo creates the final agent reply from the result.
-
-Use **AI Agents → Chats** to inspect messages, delivery state, linked execution, and related Project task.

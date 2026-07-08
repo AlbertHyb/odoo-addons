@@ -49,11 +49,35 @@ class ProjectTask(models.Model):
         string='Agent Status',
         readonly=True,
     )
+    agent_chat_message_ids = fields.One2many(
+        'odoo.agent.chat.message',
+        'project_task_id',
+        string='Agent Communications',
+    )
+    agent_chat_message_count = fields.Integer(
+        string='Agent Communication Count',
+        compute='_compute_agent_chat_message_count',
+    )
+    agent_chat_composer_agent_id = fields.Many2one(
+        'odoo.agent',
+        string='Message Agent',
+        check_company=True,
+        help='Agent that will receive the next task communication.',
+    )
+    agent_chat_composer_body = fields.Text(
+        string='Message',
+        help='Message to send to the selected agent in this task context.',
+    )
 
     @api.depends('execution_ids')
     def _compute_execution_count(self):
         for task in self:
             task.execution_count = len(task.execution_ids)
+
+    @api.depends('agent_chat_message_ids')
+    def _compute_agent_chat_message_count(self):
+        for task in self:
+            task.agent_chat_message_count = len(task.agent_chat_message_ids)
 
     def _agent_execution_prompt(self):
         self.ensure_one()
@@ -83,6 +107,30 @@ class ProjectTask(models.Model):
 
     def action_assign_agent(self):
         return self.action_send_to_agent()
+
+    def action_send_agent_chat_message(self):
+        chat_model = self.env['odoo.agent.chat.message']
+        for task in self:
+            content = (task.agent_chat_composer_body or '').strip()
+            agent = task.agent_chat_composer_agent_id or task.agent_id
+            message, execution = chat_model.create_user_execution(
+                agent,
+                content,
+                project_task=task,
+                name=_('%(task)s — message to %(agent)s') % {
+                    'task': task.display_name,
+                    'agent': agent.display_name if agent else _('Agent'),
+                },
+            )
+            task.latest_execution_id = execution.id
+            task.agent_chat_composer_body = False
+            if not task.agent_chat_composer_agent_id:
+                task.agent_chat_composer_agent_id = agent.id
+            task.message_post(
+                body=_('Agent communication queued for %s.') % agent.display_name,
+                subject=_('Agent communication queued'),
+            )
+        return True
 
     def action_retry_agent_execution(self):
         self.ensure_one()
@@ -121,6 +169,20 @@ class ProjectTask(models.Model):
             'context': {
                 'default_task_id': self.id,
                 'default_project_id': self.project_id.id,
+                'default_agent_id': self.agent_id.id,
+            },
+        }
+
+    def action_view_agent_communications(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Agent Communications'),
+            'res_model': 'odoo.agent.chat.message',
+            'view_mode': 'list,form',
+            'domain': [('project_task_id', '=', self.id)],
+            'context': {
+                'default_project_task_id': self.id,
                 'default_agent_id': self.agent_id.id,
             },
         }

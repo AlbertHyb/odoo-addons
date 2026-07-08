@@ -119,3 +119,9 @@ class AgentLog(models.Model):
             'odoo_agent',
             payload,
         )
+        if self.execution_id.task_id:
+            self.env['bus.bus']._sendone(
+                f'odoo_agent.project_task.{self.execution_id.task_id.id}',
+                'odoo_agent',
+                payload,
+            )

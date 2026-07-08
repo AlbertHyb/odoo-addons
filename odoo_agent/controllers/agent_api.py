@@ -334,27 +334,12 @@ class AgentApiController(http.Controller):
         project_task = request.env['project.task'].browse(payload.get('project_task_id') or payload.get('task_id'))
         if project_task and not project_task.exists():
             return self._error('Project task not found', status=404, code='not_found')
-        message = request.env['odoo.agent.chat.message'].send_user_message(
-            agent_id,
+        message, execution = request.env['odoo.agent.chat.message'].create_user_execution(
+            agent,
             content,
-            project_task_id=project_task.id if project_task else None,
+            project_task=project_task if project_task else None,
+            name=payload.get('name') or content[:80] or agent.display_name,
         )
-        execution = request.env['odoo.agent.execution'].create({
-            'name': payload.get('name') or content[:80] or agent.display_name,
-            'prompt': content,
-            'agent_id': agent.id,
-            'runtime_id': agent.runtime_id.id,
-            'project_id': project_task.project_id.id if project_task else False,
-            'task_id': project_task.id if project_task else False,
-            'requested_by_id': request.env.user.id,
-            'company_id': agent.company_id.id or request.env.company.id,
-            'source': 'chat',
-            'chat_message_id': message.id,
-        })
-        message.write({
-            'execution_id': execution.id,
-            'delivery_state': 'queued',
-        })
         return self._json_response({
             'status': 'ok',
             'message_id': message.id,

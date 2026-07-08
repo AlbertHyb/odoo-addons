@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 17:44+0000\n"
+"POT-Creation-Date: 2026-07-08 18:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -19,6 +19,10 @@ msgstr ""
 #: odoo_agent/models/agent_execution.py:354
 msgid "%(parent)s → %(agent)s"
 msgstr "%(parent)s → %(agent)s"
+
+#: odoo_agent/models/project_task_inherit.py:120
+msgid "%(task)s — message to %(agent)s"
+msgstr "%(task)s — mensaxe para %(agent)s"
 
 #: odoo_agent/models/agent_execution.py:370
 msgid "<p><b>%s</b> delegated work to: %s.</p>"
@@ -83,10 +87,11 @@ msgstr "Execucións activas"
 msgid "Active Tasks"
 msgstr "Activo Tarefas"
 
-#: odoo_agent/models/agent_chat.py:14
+#: odoo_agent/models/agent_chat.py:15
 #: odoo_agent/models/agent_execution.py:20
 #: odoo_agent/models/agent_log.py:32
 #: odoo_agent/models/agent_task.py:17
+#: odoo_agent/models/project_task_inherit.py:122
 #: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
@@ -110,6 +115,16 @@ msgstr "Axente asignado"
 msgid "Agent Chat Message"
 msgstr "Axente Chat Mensaxe"
 
+#: odoo_agent/models/project_task_inherit.py:57
+msgid "Agent Communication Count"
+msgstr "Axente Communication Count"
+
+#: odoo_agent/models/project_task_inherit.py:52
+#: odoo_agent/models/project_task_inherit.py:180
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Communications"
+msgstr "Axente Communications"
+
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Done"
 msgstr "Axente completado"
@@ -119,7 +134,7 @@ msgid "Agent Execution Count"
 msgstr "Número de execucións de axente"
 
 #: odoo_agent/models/project_task_inherit.py:19
-#: odoo_agent/models/project_task_inherit.py:117
+#: odoo_agent/models/project_task_inherit.py:165
 msgid "Agent Executions"
 msgstr "Execucións de axente"
 
@@ -127,10 +142,14 @@ msgstr "Execucións de axente"
 msgid "Agent Failed"
 msgstr "Axente fallido"
 
-#: odoo_agent/models/project_task_inherit.py:106
+#: odoo_agent/models/project_task_inherit.py:154
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Logs"
 msgstr "Rexistros de axente"
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Messages"
+msgstr "Axente Messages"
 
 #: odoo_agent/models/agent_stage_map.py:13
 #: odoo_agent/models/project_task_inherit.py:47
@@ -141,6 +160,14 @@ msgstr "Estado do axente"
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Working"
 msgstr "Axente traballando"
+
+#: odoo_agent/models/project_task_inherit.py:131
+msgid "Agent communication queued"
+msgstr "Axente communication queued"
+
+#: odoo_agent/models/project_task_inherit.py:130
+msgid "Agent communication queued for %s."
+msgstr "Comunicación de axente en cola para %s."
 
 #: odoo_agent/models/agent_execution.py:374
 msgid "Agent delegation created"
@@ -170,9 +197,17 @@ msgstr "Execucións de axente"
 msgid "Agent is working on this task"
 msgstr "O axente está traballando nesta tarefa"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent messages"
+msgstr "Axente messages"
+
 #: odoo_agent/views/agent_views.xml:1
 msgid "Agent setup tip:"
 msgstr "Consello de configuración do axente:"
+
+#: odoo_agent/models/project_task_inherit.py:61
+msgid "Agent that will receive the next task communication."
+msgstr "Axente que recibirá a seguinte comunicación da tarefa."
 
 #: odoo_agent/models/agent_mcp_server.py:30
 #: odoo_agent/models/agent_runtime.py:42
@@ -195,7 +230,7 @@ msgstr "Axentes mencionados no prompt con @identificador."
 msgid "Arguments"
 msgstr "Argumentos"
 
-#: odoo_agent/models/project_task_inherit.py:68
+#: odoo_agent/models/project_task_inherit.py:92
 msgid "Assign an AI agent before sending the task."
 msgstr "Asigna un axente de IA antes de enviar a tarefa."
 
@@ -215,11 +250,11 @@ msgstr "Axente asignado"
 msgid "Attempt"
 msgstr "Intento"
 
-#: odoo_agent/models/agent_chat.py:29
+#: odoo_agent/models/agent_chat.py:30
 msgid "Author"
 msgstr "Autor"
 
-#: odoo_agent/models/agent_chat.py:35
+#: odoo_agent/models/agent_chat.py:36
 msgid "Author Type"
 msgstr "Tipo de autor"
 
@@ -288,7 +323,7 @@ msgid "Command executed by the runtime for this agent."
 msgstr "Comando executado polo runtime para este axente."
 
 #: odoo_agent/models/agent.py:114
-#: odoo_agent/models/agent_chat.py:75
+#: odoo_agent/models/agent_chat.py:76
 #: odoo_agent/models/agent_execution.py:154
 #: odoo_agent/models/agent_log.py:59
 #: odoo_agent/models/agent_mcp_server.py:37
@@ -333,7 +368,7 @@ msgstr "Delegated Execucións"
 msgid "Delegations"
 msgstr "Delegacións"
 
-#: odoo_agent/models/agent_chat.py:62
+#: odoo_agent/models/agent_chat.py:63
 #: odoo_agent/views/agent_chat_views.xml:1
 msgid "Delivery State"
 msgstr "Estado de entrega"
@@ -389,7 +424,7 @@ msgstr "Erro Mensaxe"
 msgid "Errors"
 msgstr "Erros"
 
-#: odoo_agent/models/agent_chat.py:22
+#: odoo_agent/models/agent_chat.py:23
 #: odoo_agent/models/agent_log.py:13
 #: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_log_views.xml:1
@@ -475,7 +510,7 @@ msgstr "En progreso"
 msgid "Instructions"
 msgstr "Instrucións"
 
-#: odoo_agent/models/agent_chat.py:74
+#: odoo_agent/models/agent_chat.py:75
 msgid "Is Read"
 msgstr "Lido"
 
@@ -521,7 +556,7 @@ msgstr "Tarefa legacy de axente"
 msgid "Legacy Max Concurrent Tasks"
 msgstr "Máximo de tarefas legacy concorrentes"
 
-#: odoo_agent/models/agent_chat.py:45
+#: odoo_agent/models/agent_chat.py:46
 msgid "Legacy Related Task"
 msgstr "Tarefa legacy relacionada"
 
@@ -602,12 +637,21 @@ msgstr "Menciona axentes no prompt con @identificador para crear execucións fil
 msgid "Mentioned Agents"
 msgstr "Axentes mencionados"
 
-#: odoo_agent/models/agent_chat.py:44
+#: odoo_agent/models/agent_chat.py:45
 #: odoo_agent/models/agent_log.py:56
+#: odoo_agent/models/project_task_inherit.py:67
 #: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_log_views.xml:1
 msgid "Message"
 msgstr "Mensaxe"
+
+#: odoo_agent/models/project_task_inherit.py:61
+msgid "Message Agent"
+msgstr "Mensaxe Axente"
+
+#: odoo_agent/models/project_task_inherit.py:67
+msgid "Message to send to the selected agent in this task context."
+msgstr "Mensaxe para enviar ao axente seleccionado no contexto desta tarefa."
 
 #: odoo_agent/models/agent.py:53
 msgid "Model"
@@ -666,7 +710,7 @@ msgid "Project Stage"
 msgstr "Proxecto Stage"
 
 #: odoo_agent/models/agent_execution.py:45
-#: odoo_agent/models/project_task_inherit.py:72
+#: odoo_agent/models/project_task_inherit.py:96
 #: odoo_agent/views/agent_chat_views.xml:1
 msgid "Project Task"
 msgstr "Proxecto Tarefa"
@@ -689,7 +733,7 @@ msgstr "En cola"
 msgid "Queued Executions"
 msgstr "Execucións en cola"
 
-#: odoo_agent/models/agent_chat.py:50
+#: odoo_agent/models/agent_chat.py:51
 msgid "Related Project Task"
 msgstr "Tarefa de proxecto relacionada"
 
@@ -744,6 +788,14 @@ msgstr "Consello de runtime:"
 #: odoo_agent/views/agent_views.xml:1
 msgid "Runtime:"
 msgstr "Runtime:"
+
+#: odoo_agent/models/agent_chat.py:130
+msgid "Select an AI agent before sending a message."
+msgstr "Selecciona un axente de IA antes de enviar unha mensaxe."
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Send Message"
+msgstr "Send Mensaxe"
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Send to Agent"
@@ -816,7 +868,8 @@ msgstr "Prompt de sistema / instrucións para o axente"
 msgid "The command/action being executed"
 msgstr "Comando/acción que se está executando"
 
-#: odoo_agent/models/project_task_inherit.py:70
+#: odoo_agent/models/agent_chat.py:132
+#: odoo_agent/models/project_task_inherit.py:94
 msgid "The selected AI agent must have a runtime."
 msgstr "O axente de IA seleccionado debe ter un runtime."
 
@@ -837,7 +890,7 @@ msgstr "Estes axentes poden usar este servidor MCP durante a execución. Mantén
 msgid "Timeout (seconds)"
 msgstr "Timeout (segundos)"
 
-#: odoo_agent/models/agent_chat.py:56
+#: odoo_agent/models/agent_chat.py:57
 #: odoo_agent/models/agent_log.py:38
 msgid "Timestamp"
 msgstr "Data e hora"
@@ -863,6 +916,14 @@ msgstr "Identificador único de máquina (hostname ou UUID)"
 msgid "Unread"
 msgstr "Non lido"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Use assigned agent if empty"
+msgstr "Usar o axente asignado se está baleiro"
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Use this area to talk with agents in the context of this task. Each message creates a traceable chat execution, so the runtime receives the task context, conversation history, logs, status, and final result."
+msgstr "Usa esta zona para falar con axentes no contexto desta tarefa. Cada mensaxe crea unha execución de chat trazable, polo que o runtime recibe o contexto da tarefa, o historial da conversa, rexistros, estado e resultado final."
+
 #: odoo_agent/views/agent_runtime_views.xml:1
 msgid "Use this tab to see what this runtime is currently running or has recently completed."
 msgstr "Usa esta pestana para ver que está executando este runtime ou que completou recentemente."
@@ -886,6 +947,14 @@ msgstr "Traballando"
 #: odoo_agent/views/agent_dashboard_views.xml:1
 msgid "Working Agents"
 msgstr "Axentes traballando"
+
+#: odoo_agent/models/agent_chat.py:128
+msgid "Write a message before sending it to the agent."
+msgstr "Escribe unha mensaxe antes de enviala ao axente."
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Write a message for the agent..."
+msgstr "Escribe unha mensaxe para o axente..."
 
 #: odoo_agent/views/agent_views.xml:1
 msgid "Write the agent's operating rules here: role, boundaries, project context, expected output format, and what it must never do without human approval. Other agents can mention this agent with its @handle."
