@@ -91,6 +91,7 @@ See:
 | [`docs/compatibility.md`](docs/compatibility.md) | Addon/runtime version compatibility. |
 | [`docs/agent-mentions.md`](docs/agent-mentions.md) | Multi-agent delegation with `@mentions`. |
 | [`docs/security.md`](docs/security.md) | Groups, record rules, API keys, companies, and safe operation. |
+| [`docs/translations.md`](docs/translations.md) | Translation coverage and regeneration workflow. |
 | [`docs/development.md`](docs/development.md) | Development, tests, validation, and contribution workflow. |
 | [`docs/release-checklist.md`](docs/release-checklist.md) | Public release checklist. |
 | [`docs/demo-script.md`](docs/demo-script.md) | Demo data, screenshots, and video script. |

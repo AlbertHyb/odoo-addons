@@ -1,0 +1,842 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules: odoo_agent
+# Copyright (C) 2026
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: odoo_agent 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-08 17:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: odoo_agent/models/agent_execution.py:316
+msgid "%(parent)s → %(agent)s"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:332
+msgid "<p><b>%s</b> delegated work to: %s.</p>"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:207
+msgid "<p>Agent <b>%s</b> completed execution <b>%s</b>.</p>"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:221
+msgid "<p>Agent <b>%s</b> failed execution <b>%s</b>.</p><p>%s</p>"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:247
+msgid "<p>Agent execution <b>%s</b> was cancelled.</p>"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:338
+msgid "<p>Skipped mentioned agents without runtime: %s.</p>"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:11
+msgid "AI Agent"
+msgstr ""
+
+#: odoo_agent/__manifest__.py:1
+msgid "AI Agent System"
+msgstr ""
+
+#: odoo_agent/views/agent_dashboard_views.xml:1
+msgid "AI Agent System Dashboard — real-time status overview."
+msgstr ""
+
+#: odoo_agent/__manifest__.py:1
+msgid "AI Agent management: runtimes, agents, executions, logs, chat, MCP, and stage mapping"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:34
+msgid "API Key"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:34
+msgid "API key for runtime authentication"
+msgstr ""
+
+#: odoo_agent/models/agent.py:121
+#: odoo_agent/models/agent_skill.py:42
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "Active"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:48
+msgid "Active Agents"
+msgstr ""
+
+#: odoo_agent/models/agent.py:103
+#: odoo_agent/views/agent_views.xml:1
+msgid "Active Executions"
+msgstr ""
+
+#: odoo_agent/views/agent_dashboard_views.xml:1
+msgid "Active Tasks"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:13
+#: odoo_agent/models/agent_execution.py:20
+#: odoo_agent/models/agent_log.py:32
+#: odoo_agent/models/agent_task.py:17
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:127
+msgid "Agent <b>%s</b> completed task: %s"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:146
+msgid "Agent <b>%s</b> failed task: %s"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Assigned"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Done"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:36
+msgid "Agent Execution Count"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:19
+#: odoo_agent/models/project_task_inherit.py:117
+msgid "Agent Executions"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Failed"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:106
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Logs"
+msgstr ""
+
+#: odoo_agent/models/agent_stage_map.py:13
+#: odoo_agent/models/project_task_inherit.py:47
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Status"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent Working"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:336
+msgid "Agent delegation created"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:341
+msgid "Agent delegation skipped"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:364
+msgid "Agent execution finished"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:171
+msgid "Agent execution queued"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:170
+msgid "Agent execution queued for <b>%s</b>."
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent executions"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Agent is working on this task"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Agent setup tip:"
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:30
+#: odoo_agent/models/agent_runtime.py:42
+#: odoo_agent/models/agent_skill.py:30
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Agents"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Agents assigned here share this runtime's installed CLIs, MCP connectivity, and local permissions."
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:75
+msgid "Agents mentioned in the prompt with @handle."
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:25
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "Arguments"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:68
+msgid "Assign an AI agent before sending the task."
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:11
+msgid "Assign this task to an AI agent"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Assign to AI agent..."
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Assigned agent"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:114
+msgid "Attempt"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:20
+msgid "Author"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:26
+msgid "Author Type"
+msgstr ""
+
+#: odoo_agent/models/agent.py:66
+msgid "Avatar"
+msgstr ""
+
+#: odoo_agent/models/agent.py:48
+msgid "CLI Command"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Cancel"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Cancel Agent"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:110
+msgid "Cancellation Reason"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:233
+msgid "Cancellation requested from Odoo."
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:41
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Capabilities"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Capabilities are reported by the runtime: supported engines, installed CLIs, MCP support, OS details, and capacity. Use them to avoid assigning work to the wrong machine."
+msgstr ""
+
+#: odoo_agent/models/agent_skill.py:18
+#: odoo_agent/views/agent_skill_views.xml:1
+msgid "Category"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:66
+msgid "Child Executions"
+msgstr ""
+
+#: odoo_agent/models/agent_log.py:57
+#: odoo_agent/models/agent_mcp_server.py:24
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Command"
+msgstr ""
+
+#: odoo_agent/models/agent.py:48
+msgid "Command executed by the runtime for this agent."
+msgstr ""
+
+#: odoo_agent/models/agent.py:114
+#: odoo_agent/models/agent_execution.py:129
+#: odoo_agent/models/agent_log.py:59
+#: odoo_agent/models/agent_mcp_server.py:37
+#: odoo_agent/models/agent_runtime.py:60
+#: odoo_agent/models/agent_skill.py:37
+#: odoo_agent/models/agent_stage_map.py:36
+#: odoo_agent/models/agent_task.py:70
+msgid "Company"
+msgstr ""
+
+#: odoo_agent/models/agent.py:86
+msgid "Compatibility field. Use Max Concurrent Executions for new runtime dispatch."
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Complete"
+msgstr ""
+
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Completed"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:112
+#: odoo_agent/models/agent_task.py:53
+msgid "Completed At"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:39
+msgid "Daemon/CLI version"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Delegated"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:71
+#: odoo_agent/models/agent_execution.py:280
+msgid "Delegated Executions"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Delegations"
+msgstr ""
+
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "Describe what tools or data this server exposes and which business process it supports."
+msgstr ""
+
+#: odoo_agent/models/agent.py:22
+#: odoo_agent/models/agent_mcp_server.py:28
+#: odoo_agent/models/agent_skill.py:12
+#: odoo_agent/models/agent_task.py:16
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Description"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:40
+msgid "Device Info"
+msgstr ""
+
+#: odoo_agent/models/agent_stage_map.py:43
+msgid "Display Name"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Each execution is one auditable run against a Project task: queued, running, waiting for input, completed, failed, or cancelled."
+msgstr ""
+
+#: odoo_agent/models/agent.py:34
+#: odoo_agent/models/agent_execution.py:117
+#: odoo_agent/views/agent_views.xml:1
+msgid "Engine"
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:27
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "Environment"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Error"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:109
+#: odoo_agent/models/agent_task.py:51
+msgid "Error Message"
+msgstr ""
+
+#: odoo_agent/views/agent_dashboard_views.xml:1
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Errors"
+msgstr ""
+
+#: odoo_agent/models/agent_log.py:13
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Execution"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:269
+#: odoo_agent/models/agent_task.py:63
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Execution Logs"
+msgstr ""
+
+#: odoo_agent/models/agent.py:98
+#: odoo_agent/models/agent_runtime.py:45
+#: odoo_agent/views/agent_runtime_views.xml:1
+#: odoo_agent/views/agent_views.xml:1
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Executions"
+msgstr ""
+
+#: odoo_agent/models/agent_log.py:58
+msgid "Exit Code"
+msgstr ""
+
+#: odoo_agent/views/agent_skill_views.xml:1
+msgid "Explain when to use this skill, required inputs, expected output, and guardrails. These instructions are injected into the agent prompt at execution time."
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Fail"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Failed"
+msgstr ""
+
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "For stdio servers, add one argument per line or a JSON-style list understood by the runtime adapter. Avoid secrets here; use Environment for sensitive values."
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Generate API Key"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_log_views.xml:1
+#: odoo_agent/views/agent_runtime_views.xml:1
+#: odoo_agent/views/agent_skill_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+#: odoo_agent/views/agent_views.xml:1
+msgid "Group By"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:21
+msgid "IP Address"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Idle"
+msgstr ""
+
+#: odoo_agent/views/agent_dashboard_views.xml:1
+msgid "Idle Agents"
+msgstr ""
+
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "In Progress"
+msgstr ""
+
+#: odoo_agent/models/agent.py:23
+#: odoo_agent/models/agent_skill.py:13
+#: odoo_agent/views/agent_skill_views.xml:1
+#: odoo_agent/views/agent_views.xml:1
+msgid "Instructions"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:47
+msgid "Is Read"
+msgstr ""
+
+#: odoo_agent/models/agent.py:53
+msgid "LLM model to use"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:113
+msgid "Last Heartbeat"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:33
+msgid "Last Seen"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:24
+msgid "Latest Agent Execution"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:31
+msgid "Latest Agent Status"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Latest agent execution completed"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Latest agent execution failed"
+msgstr ""
+
+#: odoo_agent/models/agent.py:110
+msgid "Legacy Active Tasks"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:84
+#: odoo_agent/models/agent_log.py:20
+#: odoo_agent/models/project_task_inherit.py:40
+msgid "Legacy Agent Task"
+msgstr ""
+
+#: odoo_agent/models/agent.py:86
+msgid "Legacy Max Concurrent Tasks"
+msgstr ""
+
+#: odoo_agent/models/agent.py:107
+msgid "Legacy Tasks"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:40
+msgid "Legacy tracking field. New flows use Agent Executions."
+msgstr ""
+
+#: odoo_agent/models/agent_log.py:44
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Level"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:30
+msgid "Link to an existing Odoo project task"
+msgstr ""
+
+#: odoo_agent/models/agent.py:93
+msgid "Linked User"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:128
+#: odoo_agent/models/agent_task.py:66
+msgid "Log Count"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:123
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Logs"
+msgstr ""
+
+#: odoo_agent/models/agent.py:74
+#: odoo_agent/views/agent_views.xml:1
+msgid "MCP Servers"
+msgstr ""
+
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "MCP server tip:"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "MCP servers expose tools and data sources to the agent runtime. Assign only trusted servers and verify their commands, URLs, and environment variables on the runtime host."
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:15
+msgid "Machine ID"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Mark Offline"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Mark Online"
+msgstr ""
+
+#: odoo_agent/models/agent.py:81
+msgid "Max Concurrent Executions"
+msgstr ""
+
+#: odoo_agent/models/agent.py:16
+msgid "Mention Handle"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Mention agents in the prompt with @handle to create child executions. Delegations are traceable through Parent Execution and this list."
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:75
+msgid "Mentioned Agents"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:35
+#: odoo_agent/models/agent_log.py:56
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Message"
+msgstr ""
+
+#: odoo_agent/models/agent.py:53
+msgid "Model"
+msgstr ""
+
+#: odoo_agent/views/actions_views.xml:1
+msgid "Monitor active and failed agent executions."
+msgstr ""
+
+#: odoo_agent/models/agent.py:15
+#: odoo_agent/models/agent_mcp_server.py:12
+#: odoo_agent/models/agent_runtime.py:14
+#: odoo_agent/models/agent_skill.py:11
+msgid "Name"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:40
+msgid "OS, hardware info"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:30
+msgid "Odoo Task"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Offline"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Online"
+msgstr ""
+
+#: odoo_agent/models/agent.py:93
+msgid "Optional: link to an Odoo user for permissions"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:59
+msgid "Parent Execution"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:54
+msgid "Parent Task"
+msgstr ""
+
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Pending"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:38
+#: odoo_agent/models/agent_task.py:25
+msgid "Project"
+msgstr ""
+
+#: odoo_agent/models/agent_stage_map.py:29
+msgid "Project Stage"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:45
+#: odoo_agent/models/project_task_inherit.py:72
+msgid "Project Task"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:19
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Prompt"
+msgstr ""
+
+#: odoo_agent/__manifest__.py:1
+msgid "Provides a native multi-agent execution architecture inside Odoo. - Agent Runtimes: external machines (N100, Mac Mini, etc.) connected via API - AI Agents: configurable entities with instructions, skills, and runtime assignment - Agent Skills: reusable instruction packs - Agent Executions: repeatable runtime work units linked to project.task - Execution Logs: detailed command history with streaming support - Agent Chat: direct messaging between users and AI agents - Stage Mapping: configurable agent status to project stage mapping - REST API: bidirectional communication with external runtimes"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Queued"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:52
+msgid "Queued Executions"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:36
+msgid "Related Task"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:52
+msgid "Requested By"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:108
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Result"
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:50
+msgid "Result/Output"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Retry"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Retry Agent"
+msgstr ""
+
+#: odoo_agent/models/agent.py:92
+#: odoo_agent/models/agent_execution.py:116
+msgid "Retry Limit"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Running"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:56
+msgid "Running Executions"
+msgstr ""
+
+#: odoo_agent/models/agent.py:27
+#: odoo_agent/models/agent_execution.py:29
+#: odoo_agent/models/agent_log.py:26
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_views.xml:1
+msgid "Runtime"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Runtime tip:"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Runtime:"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Send to Agent"
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:13
+msgid "Server Key"
+msgstr ""
+
+#: odoo_agent/models/agent.py:16
+msgid "Short handle used to mention this agent from prompts, for example @qa or @hermes."
+msgstr ""
+
+#: odoo_agent/views/agent_skill_views.xml:1
+msgid "Skill tip:"
+msgstr ""
+
+#: odoo_agent/models/agent.py:67
+#: odoo_agent/views/agent_views.xml:1
+msgid "Skills"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Skills are reusable capability packs injected into the final prompt. Add only the skills this agent needs; too many skills make executions noisy and harder to audit."
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+msgid "Start"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:111
+#: odoo_agent/models/agent_task.py:52
+msgid "Started At"
+msgstr ""
+
+#: odoo_agent/models/agent.py:54
+#: odoo_agent/models/agent_execution.py:91
+#: odoo_agent/models/agent_runtime.py:22
+#: odoo_agent/models/agent_task.py:36
+#: odoo_agent/views/agent_execution_views.xml:1
+#: odoo_agent/views/agent_runtime_views.xml:1
+#: odoo_agent/views/agent_task_views.xml:1
+#: odoo_agent/views/agent_views.xml:1
+msgid "Status"
+msgstr ""
+
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "Store environment variables required by the MCP server. Prefer references to runtime-side secrets when possible instead of plain credentials."
+msgstr ""
+
+#: odoo_agent/models/agent_task.py:60
+msgid "Subtasks"
+msgstr ""
+
+#: odoo_agent/models/agent.py:23
+msgid "System prompt / instructions for the agent"
+msgstr ""
+
+#: odoo_agent/models/agent_log.py:57
+msgid "The command/action being executed"
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:70
+msgid "The selected AI agent must have a runtime."
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:161
+msgid "The selected agent must have a runtime before creating an execution."
+msgstr ""
+
+#: odoo_agent/models/agent_skill.py:13
+msgid "The skill instructions/prompt that will be injected into the agent"
+msgstr ""
+
+#: odoo_agent/views/agent_mcp_server_views.xml:1
+msgid "These agents can use this MCP server during execution. Keep the list small to reduce accidental access to tools or data."
+msgstr ""
+
+#: odoo_agent/models/agent.py:91
+#: odoo_agent/models/agent_execution.py:115
+msgid "Timeout (seconds)"
+msgstr ""
+
+#: odoo_agent/models/agent_chat.py:41
+#: odoo_agent/models/agent_log.py:38
+msgid "Timestamp"
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:18
+#: odoo_agent/models/agent_task.py:15
+msgid "Title"
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:14
+msgid "Transport"
+msgstr ""
+
+#: odoo_agent/models/agent_mcp_server.py:26
+msgid "URL"
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:15
+msgid "Unique machine identifier (hostname or UUID)"
+msgstr ""
+
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "Unread"
+msgstr ""
+
+#: odoo_agent/views/agent_runtime_views.xml:1
+msgid "Use this tab to see what this runtime is currently running or has recently completed."
+msgstr ""
+
+#: odoo_agent/models/agent_runtime.py:39
+msgid "Version"
+msgstr ""
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Waiting for Input"
+msgstr ""
+
+#: odoo_agent/views/agent_log_views.xml:1
+msgid "Warnings"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Working"
+msgstr ""
+
+#: odoo_agent/views/agent_dashboard_views.xml:1
+msgid "Working Agents"
+msgstr ""
+
+#: odoo_agent/views/agent_views.xml:1
+msgid "Write the agent's operating rules here: role, boundaries, project context, expected output format, and what it must never do without human approval. Other agents can mention this agent with its @handle."
+msgstr ""
+
+#: odoo_agent/models/agent_execution.py:346
+msgid "You were mentioned from execution \"%(execution)s\" by agent \"%(agent)s\". Focus only on the part of the task that matches your role. Original prompt: %(prompt)s"
+msgstr ""

@@ -38,6 +38,23 @@ def check_access_csv():
                 raise AssertionError(f'{path}: {row["id"]} has invalid {column}={row[column]}')
 
 
+def check_i18n_files():
+    i18n_dir = ADDON / 'i18n'
+    if not i18n_dir.exists():
+        return
+    for path in i18n_dir.glob('*.po'):
+        content = path.read_text()
+        if 'msgid ""\nmsgstr ""' not in content:
+            raise AssertionError(f'{path} is missing a gettext header')
+        msgids = content.count('\nmsgid ')
+        msgstrs = content.count('\nmsgstr ')
+        if msgids != msgstrs:
+            raise AssertionError(f'{path} has {msgids} msgid entries and {msgstrs} msgstr entries')
+    pot = i18n_dir / 'odoo_agent.pot'
+    if pot.exists() and 'Project-Id-Version: odoo_agent 18.0' not in pot.read_text():
+        raise AssertionError(f'{pot} does not look like the addon template')
+
+
 def check_no_forbidden_branding():
     forbidden = ''.join(('O', 'C', 'A'))
     for path in ADDON.rglob('*'):
@@ -50,6 +67,7 @@ def main():
     check_python()
     check_xml()
     check_access_csv()
+    check_i18n_files()
     check_no_forbidden_branding()
     print('odoo_agent static validation passed')
 
