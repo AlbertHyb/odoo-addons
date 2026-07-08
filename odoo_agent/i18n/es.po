@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 18:58+0000\n"
+"POT-Creation-Date: 2026-07-08 19:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -542,6 +542,10 @@ msgstr "Última ejecución de agente completada"
 msgid "Latest agent execution failed"
 msgstr "Última ejecución de agente fallida"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Latest status"
+msgstr "Último estado"
+
 #: odoo_agent/models/agent.py:110
 msgid "Legacy Active Tasks"
 msgstr "Legacy Activo Tareas"
@@ -794,8 +798,12 @@ msgid "Select an AI agent before sending a message."
 msgstr "Selecciona un agente de IA antes de enviar un mensaje."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Send Message"
-msgstr "Send Mensaje"
+msgid "Send"
+msgstr "Enviar"
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Send follow-up instructions, receive agent replies, and keep every message linked to a traceable execution, logs, status, and final result."
+msgstr "Envía instrucciones de seguimiento, recibe respuestas del agente y conserva cada mensaje vinculado a una ejecución trazable, logs, estado y resultado final."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Send to Agent"
@@ -864,6 +872,10 @@ msgstr "Subtareas"
 msgid "System prompt / instructions for the agent"
 msgstr "Prompt de sistema / instrucciones para el agente"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Task conversation"
+msgstr "Tarea conversation"
+
 #: odoo_agent/models/agent_log.py:57
 msgid "The command/action being executed"
 msgstr "Comando/acción que se está ejecutando"
@@ -917,16 +929,16 @@ msgid "Unread"
 msgstr "No leído"
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use assigned agent if empty"
-msgstr "Usar el agente asignado si está vacío"
-
-#: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use this area to talk with agents in the context of this task. Each message creates a traceable chat execution, so the runtime receives the task context, conversation history, logs, status, and final result."
-msgstr "Usa esta zona para hablar con agentes en el contexto de esta tarea. Cada mensaje crea una ejecución de chat trazable, por lo que el runtime recibe el contexto de la tarea, el historial de conversación, logs, estado y resultado final."
+msgid "Use assigned agent"
+msgstr "Usar agente asignado"
 
 #: odoo_agent/views/agent_runtime_views.xml:1
 msgid "Use this tab to see what this runtime is currently running or has recently completed."
 msgstr "Usa esta pestaña para ver qué está ejecutando este runtime o qué ha completado recientemente."
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "User"
+msgstr "Usuario"
 
 #: odoo_agent/models/agent_runtime.py:39
 msgid "Version"
@@ -953,8 +965,8 @@ msgid "Write a message before sending it to the agent."
 msgstr "Escribe un mensaje antes de enviarlo al agente."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Write a message for the agent..."
-msgstr "Escribe un mensaje para el agente..."
+msgid "Write a reply or follow-up for the agent..."
+msgstr "Escribe una respuesta o seguimiento para el agente..."
 
 #: odoo_agent/views/agent_views.xml:1
 msgid "Write the agent's operating rules here: role, boundaries, project context, expected output format, and what it must never do without human approval. Other agents can mention this agent with its @handle."

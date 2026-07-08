@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 18:58+0000\n"
+"POT-Creation-Date: 2026-07-08 19:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -542,6 +542,10 @@ msgstr "Última execució d'agent completada"
 msgid "Latest agent execution failed"
 msgstr "Última execució d'agent fallada"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Latest status"
+msgstr "Últim estat"
+
 #: odoo_agent/models/agent.py:110
 msgid "Legacy Active Tasks"
 msgstr "Legacy Actiu Tasques"
@@ -794,8 +798,12 @@ msgid "Select an AI agent before sending a message."
 msgstr "Selecciona un agent d’IA abans d’enviar un missatge."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Send Message"
-msgstr "Send Missatge"
+msgid "Send"
+msgstr "Envia"
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Send follow-up instructions, receive agent replies, and keep every message linked to a traceable execution, logs, status, and final result."
+msgstr "Envia instruccions de seguiment, rep respostes de l’agent i mantén cada missatge vinculat a una execució traçable, registres, estat i resultat final."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Send to Agent"
@@ -864,6 +872,10 @@ msgstr "Subtasques"
 msgid "System prompt / instructions for the agent"
 msgstr "Prompt de sistema / instruccions per a l'agent"
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Task conversation"
+msgstr "Tasca conversation"
+
 #: odoo_agent/models/agent_log.py:57
 msgid "The command/action being executed"
 msgstr "Ordre/acció que s'està executant"
@@ -917,16 +929,16 @@ msgid "Unread"
 msgstr "No llegit"
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use assigned agent if empty"
-msgstr "Utilitza l’agent assignat si és buit"
-
-#: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use this area to talk with agents in the context of this task. Each message creates a traceable chat execution, so the runtime receives the task context, conversation history, logs, status, and final result."
-msgstr "Utilitza aquesta zona per parlar amb agents en el context d’aquesta tasca. Cada missatge crea una execució de xat traçable, de manera que el runtime rep el context de la tasca, l’historial de conversa, els registres, l’estat i el resultat final."
+msgid "Use assigned agent"
+msgstr "Utilitza l’agent assignat"
 
 #: odoo_agent/views/agent_runtime_views.xml:1
 msgid "Use this tab to see what this runtime is currently running or has recently completed."
 msgstr "Usa aquesta pestanya per veure què està executant aquest runtime o què ha completat recentment."
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "User"
+msgstr "Usuari"
 
 #: odoo_agent/models/agent_runtime.py:39
 msgid "Version"
@@ -953,8 +965,8 @@ msgid "Write a message before sending it to the agent."
 msgstr "Escriu un missatge abans d’enviar-lo a l’agent."
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Write a message for the agent..."
-msgstr "Escriu un missatge per a l’agent..."
+msgid "Write a reply or follow-up for the agent..."
+msgstr "Escriu una resposta o seguiment per a l’agent..."
 
 #: odoo_agent/views/agent_views.xml:1
 msgid "Write the agent's operating rules here: role, boundaries, project context, expected output format, and what it must never do without human approval. Other agents can mention this agent with its @handle."

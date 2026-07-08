@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 18:58+0000\n"
+"POT-Creation-Date: 2026-07-08 19:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -542,6 +542,10 @@ msgstr ""
 msgid "Latest agent execution failed"
 msgstr ""
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Latest status"
+msgstr ""
+
 #: odoo_agent/models/agent.py:110
 msgid "Legacy Active Tasks"
 msgstr ""
@@ -794,7 +798,11 @@ msgid "Select an AI agent before sending a message."
 msgstr ""
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Send Message"
+msgid "Send"
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Send follow-up instructions, receive agent replies, and keep every message linked to a traceable execution, logs, status, and final result."
 msgstr ""
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
@@ -864,6 +872,10 @@ msgstr ""
 msgid "System prompt / instructions for the agent"
 msgstr ""
 
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "Task conversation"
+msgstr ""
+
 #: odoo_agent/models/agent_log.py:57
 msgid "The command/action being executed"
 msgstr ""
@@ -917,15 +929,15 @@ msgid "Unread"
 msgstr ""
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use assigned agent if empty"
-msgstr ""
-
-#: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Use this area to talk with agents in the context of this task. Each message creates a traceable chat execution, so the runtime receives the task context, conversation history, logs, status, and final result."
+msgid "Use assigned agent"
 msgstr ""
 
 #: odoo_agent/views/agent_runtime_views.xml:1
 msgid "Use this tab to see what this runtime is currently running or has recently completed."
+msgstr ""
+
+#: odoo_agent/views/project_task_inherit_views.xml:1
+msgid "User"
 msgstr ""
 
 #: odoo_agent/models/agent_runtime.py:39
@@ -953,7 +965,7 @@ msgid "Write a message before sending it to the agent."
 msgstr ""
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
-msgid "Write a message for the agent..."
+msgid "Write a reply or follow-up for the agent..."
 msgstr ""
 
 #: odoo_agent/views/agent_views.xml:1

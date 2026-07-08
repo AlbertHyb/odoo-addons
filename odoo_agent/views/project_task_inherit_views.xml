@@ -26,42 +26,83 @@
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Agent Communications" name="agent_communications">
-                    <div class="alert alert-info" role="alert">
-                        Use this area to talk with agents in the context of this task. Each message creates a traceable
-                        chat execution, so the runtime receives the task context, conversation history, logs, status,
-                        and final result.
-                    </div>
-                    <group string="Send Message">
-                        <group>
-                            <field name="agent_chat_composer_agent_id"
-                                   options="{'no_create': True}"
-                                   placeholder="Use assigned agent if empty"/>
-                        </group>
-                        <group>
-                            <field name="agent_chat_composer_body"
-                                   nolabel="1"
-                                   placeholder="Write a message for the agent..."/>
+                    <div class="o_agent_comms">
+                        <div class="o_agent_comms_header">
+                            <div>
+                                <div class="o_agent_comms_eyebrow">Task conversation</div>
+                                <h3>Talk with agents without leaving the task</h3>
+                                <p>
+                                    Send follow-up instructions, receive agent replies, and keep every message linked to
+                                    a traceable execution, logs, status, and final result.
+                                </p>
+                            </div>
+                            <div class="o_agent_comms_status" invisible="not latest_execution_status">
+                                <span>Latest status</span>
+                                <field name="latest_execution_status" widget="badge" readonly="1"/>
+                            </div>
+                        </div>
+
+                        <div class="o_agent_comms_thread">
+                            <field name="agent_chat_message_ids" nolabel="1" readonly="1" mode="kanban" class="o_agent_comms_messages">
+                                <kanban class="o_agent_comms_kanban" create="0" edit="0" delete="0">
+                                    <field name="timestamp"/>
+                                    <field name="author_type"/>
+                                    <field name="agent_id"/>
+                                    <field name="content"/>
+                                    <field name="delivery_state"/>
+                                    <field name="execution_id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div t-att-class="'o_agent_message ' + (record.author_type.raw_value == 'agent' ? 'o_agent_message_agent' : 'o_agent_message_user')">
+                                                <div class="o_agent_message_avatar">
+                                                    <i t-if="record.author_type.raw_value == 'agent'" class="fa fa-magic" title="Agent"/>
+                                                    <i t-else="" class="fa fa-user" title="User"/>
+                                                </div>
+                                                <div class="o_agent_message_body">
+                                                    <div class="o_agent_message_meta">
+                                                        <div class="o_agent_message_author">
+                                                            <field name="agent_id"/>
+                                                            <span t-if="record.author_type.raw_value == 'user'">User</span>
+                                                        </div>
+                                                        <div class="o_agent_message_context">
+                                                            <field name="timestamp"/>
+                                                            <span class="o_agent_message_delivery"><field name="delivery_state"/></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="o_agent_message_content">
+                                                        <field name="content"/>
+                                                    </div>
+                                                    <div class="o_agent_message_execution" t-if="record.execution_id.raw_value">
+                                                        <i class="fa fa-bolt"/>
+                                                        <field name="execution_id"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </div>
+
+                        <div class="o_agent_comms_composer">
+                            <div class="o_agent_comms_target">
+                                <label for="agent_chat_composer_agent_id">Agent</label>
+                                <field name="agent_chat_composer_agent_id"
+                                       options="{'no_create': True}"
+                                       placeholder="Use assigned agent"/>
+                            </div>
+                            <div class="o_agent_comms_input">
+                                <field name="agent_chat_composer_body"
+                                       nolabel="1"
+                                       placeholder="Write a reply or follow-up for the agent..."/>
+                            </div>
                             <button name="action_send_agent_chat_message"
                                     type="object"
-                                    string="Send Message"
-                                    class="btn-primary"/>
-                        </group>
-                    </group>
-                    <field name="agent_chat_message_ids" nolabel="1" readonly="1">
-                        <list string="Agent Communications"
-                              create="0"
-                              edit="0"
-                              delete="0"
-                              decoration-info="author_type == 'agent'"
-                              decoration-muted="delivery_state == 'failed'">
-                            <field name="timestamp"/>
-                            <field name="author_type" widget="badge"/>
-                            <field name="agent_id"/>
-                            <field name="content"/>
-                            <field name="delivery_state" widget="badge"/>
-                            <field name="execution_id"/>
-                        </list>
-                    </field>
+                                    string="Send"
+                                    icon="fa-paper-plane"
+                                    class="btn-primary o_agent_comms_send"/>
+                        </div>
+                    </div>
                 </page>
             </xpath>
         </field>
