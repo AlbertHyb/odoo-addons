@@ -88,6 +88,31 @@ class AgentExecution(models.Model):
         index=True,
         copy=False,
     )
+    source = fields.Selection(
+        [
+            ('task', 'Project Task'),
+            ('chat', 'Chat'),
+            ('manual', 'Manual'),
+        ],
+        string='Source',
+        default='task',
+        required=True,
+        index=True,
+        copy=False,
+    )
+    chat_message_id = fields.Many2one(
+        'odoo.agent.chat.message',
+        string='Source Chat Message',
+        ondelete='set null',
+        index=True,
+        copy=False,
+        check_company=True,
+    )
+    chat_message_ids = fields.One2many(
+        'odoo.agent.chat.message',
+        'execution_id',
+        string='Chat Messages',
+    )
     status = fields.Selection(
         [
             ('queued', 'Queued'),
@@ -173,7 +198,15 @@ class AgentExecution(models.Model):
             if not self.env.context.get('skip_agent_mentions'):
                 execution._create_mentioned_agent_executions(mentioned_agents)
             execution._sync_project_task_stage()
+            execution._notify_execution_event('execution_updated')
         return executions
+
+    def write(self, vals):
+        result = super().write(vals)
+        if {'status', 'result', 'error_message', 'cancellation_reason', 'last_heartbeat_at'} & set(vals):
+            for execution in self:
+                execution._notify_execution_event('execution_updated')
+        return result
 
     @api.model
     def get_queued_for_runtime(self, runtime, limit=10):
@@ -204,6 +237,7 @@ class AgentExecution(models.Model):
             if result is not None:
                 vals['result'] = result
             execution.write(vals)
+            execution._create_chat_reply(result)
             execution._after_finished(Markup(_('<p>Agent <b>%s</b> completed execution <b>%s</b>.</p>')) % (
                 escape(execution.agent_id.display_name),
                 escape(execution.display_name),
@@ -218,6 +252,7 @@ class AgentExecution(models.Model):
             if error_message:
                 vals['error_message'] = error_message
             execution.write(vals)
+            execution._mark_chat_failed()
             execution._after_finished(Markup(_('<p>Agent <b>%s</b> failed execution <b>%s</b>.</p><p>%s</p>')) % (
                 escape(execution.agent_id.display_name),
                 escape(execution.display_name),
@@ -243,6 +278,7 @@ class AgentExecution(models.Model):
             if reason:
                 vals['cancellation_reason'] = reason
             execution.write(vals)
+            execution._mark_chat_failed()
             execution._after_finished(
                 Markup(_('<p>Agent execution <b>%s</b> was cancelled.</p>')) % escape(execution.display_name)
             )
@@ -260,6 +296,8 @@ class AgentExecution(models.Model):
             'attempt': self.attempt + 1,
             'requested_by_id': self.env.user.id,
             'company_id': self.company_id.id,
+            'source': self.source,
+            'chat_message_id': self.chat_message_id.id,
         })
 
     def action_view_logs(self):
@@ -362,6 +400,47 @@ class AgentExecution(models.Model):
             if self.result:
                 body += Markup('<p><b>Result:</b></p><pre style="white-space:pre-wrap">%s</pre>') % escape(self.result)
             self.task_id.message_post(body=body, subject=_('Agent execution finished'))
+        self._notify_execution_event('execution_updated')
+
+    def _create_chat_reply(self, result=None):
+        self.ensure_one()
+        if self.source != 'chat' or not result:
+            return self.env['odoo.agent.chat.message']
+        existing = self.env['odoo.agent.chat.message'].search([
+            ('execution_id', '=', self.id),
+            ('author_type', '=', 'agent'),
+        ], limit=1)
+        if existing:
+            return existing
+        if self.chat_message_id:
+            self.chat_message_id.delivery_state = 'delivered'
+        return self.env['odoo.agent.chat.message'].sudo().send_agent_message(
+            self.agent_id.id,
+            result,
+            project_task_id=self.task_id.id,
+            execution_id=self.id,
+            author_id=self.requested_by_id.id,
+        )
+
+    def _mark_chat_failed(self):
+        self.ensure_one()
+        if self.source == 'chat' and self.chat_message_id:
+            self.chat_message_id.delivery_state = 'failed'
+
+    def _notify_execution_event(self, event_name):
+        self.ensure_one()
+        payload = {
+            'event': event_name,
+            'execution_id': self.id,
+            'status': self.status,
+            'agent_id': self.agent_id.id,
+            'runtime_id': self.runtime_id.id,
+            'source': self.source,
+            'chat_message_id': self.chat_message_id.id if self.chat_message_id else None,
+            'task_id': self.task_id.id if self.task_id else None,
+        }
+        self.env['bus.bus']._sendone(f'odoo_agent.execution.{self.id}', 'odoo_agent', payload)
+        self.env['bus.bus']._sendone(f'odoo_agent.agent.{self.agent_id.id}', 'odoo_agent', payload)
 
     def _sync_project_task_stage(self):
         self.ensure_one()
@@ -383,6 +462,8 @@ class AgentExecution(models.Model):
             'prompt': self.prompt or self.task_id.description or '',
             'status': self.status,
             'attempt': self.attempt,
+            'source': self.source,
+            'chat_message_id': self.chat_message_id.id if self.chat_message_id else None,
             'timeout_seconds': self.timeout_seconds,
             'retry_limit': self.retry_limit,
             'project_id': self.project_id.id if self.project_id else None,
@@ -398,5 +479,23 @@ class AgentExecution(models.Model):
                 for agent in self.mentioned_agent_ids
             ],
             'created_at': fields.Datetime.to_string(self.create_date) if self.create_date else None,
+            'conversation': self._conversation_runtime_payload(),
             'agent': self.agent_id.to_runtime_config(),
         }
+
+    def _conversation_runtime_payload(self):
+        self.ensure_one()
+        if self.source != 'chat':
+            return []
+        domain = [('agent_id', '=', self.agent_id.id)]
+        if self.task_id:
+            domain.append(('project_task_id', '=', self.task_id.id))
+        messages = self.env['odoo.agent.chat.message'].sudo().search(
+            domain,
+            order='timestamp desc, id desc',
+            limit=20,
+        )
+        return [
+            message.to_runtime_payload()
+            for message in reversed(messages)
+        ]

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import ast
 import datetime as dt
+import os
 import re
 import textwrap
 import xml.etree.ElementTree as ET
@@ -25,8 +26,9 @@ LANGS = {
     "eu": "Basque",
 }
 ODOO_BASE_I18N = [
-    Path("/Volumes/development-1/odoo/18.0/odoo/addons/base/i18n"),
-    Path("/Volumes/development-1/odoo/18.0/addons/base/i18n"),
+    Path(path)
+    for path in os.getenv("ODOO_BASE_I18N", "").split(os.pathsep)
+    if path
 ]
 
 SKIP_VALUES = {
@@ -382,6 +384,43 @@ QUALITY_EXACT = {
 for msg, vals in QUALITY_EXACT.items():
     for lang, val in vals.items():
         CUSTOM.setdefault(lang, {})[msg] = val
+
+PHASE9_EXACT = {
+    "Chat": {"es": "Chat", "ca": "Xat", "gl": "Chat", "eu": "Txata"},
+    "Chat Messages": {"es": "Mensajes de chat", "ca": "Missatges de xat", "gl": "Mensaxes de chat", "eu": "Txat mezuak"},
+    "Chat executions keep the user request, runtime work, and agent replies traceable. Live notifications are published on the Odoo bus for this execution and agent.": {
+        "es": "Las ejecuciones de chat mantienen trazables la petición del usuario, el trabajo del runtime y las respuestas del agente. Las notificaciones en vivo se publican en el bus de Odoo para esta ejecución y agente.",
+        "ca": "Les execucions de xat mantenen traçables la petició de l'usuari, la feina del runtime i les respostes de l'agent. Les notificacions en viu es publiquen al bus d'Odoo per a aquesta execució i agent.",
+        "gl": "As execucións de chat manteñen trazables a petición do usuario, o traballo do runtime e as respostas do axente. As notificacións en vivo publícanse no bus de Odoo para esta execución e axente.",
+        "eu": "Txat exekuzioek erabiltzailearen eskaera, runtimearen lana eta agentearen erantzunak trazagarri mantentzen dituzte. Zuzeneko jakinarazpenak Odoo busean argitaratzen dira exekuzio eta agente honentzat.",
+    },
+    "Delivery State": {"es": "Estado de entrega", "ca": "Estat de lliurament", "gl": "Estado de entrega", "eu": "Bidalketa egoera"},
+    "From Agents": {"es": "De agentes", "ca": "D'agents", "gl": "De axentes", "eu": "Agenteetatik"},
+    "From Users": {"es": "De usuarios", "ca": "D'usuaris", "gl": "De usuarios", "eu": "Erabiltzaileetatik"},
+    "Mark as Read": {"es": "Marcar como leído", "ca": "Marca com a llegit", "gl": "Marcar como lido", "eu": "Markatu irakurrita"},
+    "Source": {"es": "Origen", "ca": "Origen", "gl": "Orixe", "eu": "Jatorria"},
+    "Legacy Related Task": {"es": "Tarea legacy relacionada", "ca": "Tasca legacy relacionada", "gl": "Tarefa legacy relacionada", "eu": "Lotutako legacy zeregina"},
+    "Related Project Task": {"es": "Tarea de proyecto relacionada", "ca": "Tasca de projecte relacionada", "gl": "Tarefa de proxecto relacionada", "eu": "Lotutako proiektu zeregina"},
+    "Source Chat Message": {"es": "Mensaje de chat origen", "ca": "Missatge de xat origen", "gl": "Mensaxe de chat orixe", "eu": "Jatorrizko txat mezua"},
+    "Sent": {"es": "Enviado", "ca": "Enviat", "gl": "Enviado", "eu": "Bidalia"},
+    "Delivered": {"es": "Entregado", "ca": "Lliurat", "gl": "Entregado", "eu": "Entregatua"},
+    "Manual": {"es": "Manual", "ca": "Manual", "gl": "Manual", "eu": "Eskuzkoa"},
+}
+for msg, vals in PHASE9_EXACT.items():
+    for lang, val in vals.items():
+        CUSTOM.setdefault(lang, {})[msg] = val
+
+REPRODUCIBLE_EXACT = {
+    "Category": {"es": "Categoría", "ca": "Categoria", "gl": "Categoría", "eu": "Kategoria"},
+    "Group By": {"es": "Agrupar por", "ca": "Agrupa per", "gl": "Agrupar por", "eu": "Taldekatu honen arabera"},
+    "IP Address": {"es": "Dirección IP", "ca": "Adreça IP", "gl": "Enderezo IP", "eu": "IP helbidea"},
+    "Level": {"es": "Nivel", "ca": "Nivell", "gl": "Nivel", "eu": "Maila"},
+}
+for msg, vals in REPRODUCIBLE_EXACT.items():
+    for lang, val in vals.items():
+        CUSTOM.setdefault(lang, {})[msg] = val
+
+
 
 
 

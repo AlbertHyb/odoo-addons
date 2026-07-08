@@ -7,6 +7,7 @@
     <menuitem id="menu_agent_execution" name="Executions" parent="menu_agent_root" sequence="30" action="odoo_agent.action_agent_execution"/>
     <menuitem id="menu_agent_execution_failed" name="Failed Executions" parent="menu_agent_root" sequence="35" action="odoo_agent.action_agent_execution_failed"/>
     <menuitem id="menu_agent_log" name="Execution Logs" parent="menu_agent_root" sequence="40" action="odoo_agent.action_agent_log"/>
+    <menuitem id="menu_agent_chat_message" name="Chats" parent="menu_agent_root" sequence="45" action="odoo_agent.action_agent_chat_message"/>
     <menuitem id="menu_agent_config" name="Configuration" parent="menu_agent_root" sequence="90" groups="odoo_agent.group_agent_admin"/>
     <menuitem id="menu_agent_skill" name="Skills" parent="menu_agent_config" sequence="10" action="odoo_agent.action_agent_skill"/>
     <menuitem id="menu_agent_mcp_server" name="MCP Servers" parent="menu_agent_config" sequence="20" action="odoo_agent.action_agent_mcp_server"/>

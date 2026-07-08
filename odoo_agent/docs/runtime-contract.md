@@ -55,3 +55,62 @@ Legacy `tasks` remains only as compatibility fallback.
 - If the configured CLI is missing, fail the execution.
 - Never report fake success when the CLI was not executed.
 - Stream useful logs back to Odoo while running.
+
+
+## Chat execution contract
+
+Chat messages are executed through the same `odoo.agent.execution` lifecycle used by Project tasks.
+
+When a user sends a chat message through `POST /api/agent/{agent_id}/chat`, Odoo creates:
+
+- one `odoo.agent.chat.message` with `author_type=user`;
+- one queued `odoo.agent.execution` with `source=chat`;
+- a link from the message to the execution.
+
+Runtime polling then returns the execution with additional chat context:
+
+```json
+{
+  "source": "chat",
+  "chat_message_id": 10,
+  "conversation": [
+    {"author_type": "user", "content": "Can you review this?"}
+  ]
+}
+```
+
+When the runtime completes the execution, Odoo creates an agent chat reply from the execution result.
+
+The runtime can also send intermediate chat replies with:
+
+```http
+POST /api/agent/execution/{id}/message
+```
+
+Payload:
+
+```json
+{
+  "message": "I am checking the logs now."
+}
+```
+
+## Realtime notifications
+
+The addon publishes Odoo bus notifications with notification type `odoo_agent`.
+
+Events:
+
+| Event | Meaning |
+| --- | --- |
+| `chat_message_created` | A chat message was created. |
+| `chat_message_updated` | A chat message state changed. |
+| `execution_updated` | Execution status/result/error changed. |
+| `log_created` | Runtime created an execution log. |
+
+Channels use these names:
+
+```text
+odoo_agent.agent.{agent_id}
+odoo_agent.execution.{execution_id}
+```

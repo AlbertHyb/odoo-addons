@@ -6,7 +6,8 @@
 
 | Addon version | Runtime version | Status |
 | --- | --- | --- |
-| `18.0.1.4.x` | `>=0.1.0 <0.2.0` | First public baseline. |
+| `18.0.1.4.x` | `>=0.1.0 <0.2.0` | First public execution baseline. |
+| `18.0.1.5.x` | `>=0.2.0 <0.3.0` | Chat executions and Odoo bus notifications. |
 
 ## Compatibility rules
 

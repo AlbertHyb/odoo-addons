@@ -2,6 +2,7 @@
 
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+from odoo.tools import html2plaintext
 
 from .common import AgentTestMixin
 
@@ -19,7 +20,7 @@ class TestProjectTaskAgentFlow(AgentTestMixin):
         self.assertEqual(execution.agent_id, self.agent)
         self.assertEqual(execution.runtime_id, self.runtime)
         self.assertIn(self.task.name, execution.prompt)
-        self.assertIn(self.task.description, execution.prompt)
+        self.assertIn(html2plaintext(self.task.description or '').strip(), execution.prompt)
 
     def test_project_task_html_description_becomes_plain_prompt(self):
         self.task.description = (

@@ -87,3 +87,19 @@ Do QA.
 ```
 
 Agents are more useful when tasks include objective, scope, constraints, and expected output.
+
+
+## Chat with agents
+
+Agent chat uses the same execution system as Project tasks. When you send a message to an agent, Odoo creates a queued chat execution so the runtime can process it with full traceability.
+
+Flow:
+
+1. User sends a chat message to an agent.
+2. Odoo creates a chat message and a queued execution.
+3. Runtime polls the execution.
+4. Runtime streams logs and may send intermediate messages.
+5. Runtime completes the execution.
+6. Odoo creates the final agent reply from the result.
+
+Use **AI Agents → Chats** to inspect messages, delivery state, linked execution, and related Project task.

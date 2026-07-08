@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'AI Agent System',
-    'version': '18.0.1.4.1',
+    'version': '18.0.1.5.0',
     'category': 'Productivity',
     'summary': 'AI Agent management: runtimes, agents, executions, logs, chat, MCP, and stage mapping',
     'description': """
@@ -17,7 +17,7 @@ Provides a native multi-agent execution architecture inside Odoo.
     """,
     'author': 'Nicolas Ramos',
     'website': 'https://github.com/nicolasramos-es',
-    'depends': ['project', 'mail', 'base'],
+    'depends': ['project', 'mail', 'base', 'bus'],
     'data': [
         'security/agent_security.xml',
         'security/ir.model.access.csv',

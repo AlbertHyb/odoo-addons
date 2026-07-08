@@ -258,6 +258,27 @@ class AgentApiController(http.Controller):
         )
         return self._json_response({'status': 'ok', 'logs': logs})
 
+    @http.route('/api/agent/execution/<int:execution_id>/message', type='http', methods=['POST'], auth='public', csrf=False)
+    def add_execution_message(self, execution_id, **kwargs):
+        runtime = self._authenticate_runtime()
+        if not runtime:
+            return self._error('Invalid API key', status=401, code='invalid_api_key')
+        execution, error = self._get_runtime_execution(runtime, execution_id)
+        if error:
+            return error
+        payload = self._payload()
+        content = payload.get('content') or payload.get('message')
+        if not content:
+            return self._error('message is required', status=400, code='validation_error')
+        message = request.env['odoo.agent.chat.message'].sudo().send_agent_message(
+            execution.agent_id.id,
+            content,
+            project_task_id=execution.task_id.id,
+            execution_id=execution.id,
+            author_id=execution.requested_by_id.id,
+        )
+        return self._json_response({'status': 'ok', 'message_id': message.id})
+
     # Compatibility routes for older runtimes that still call /task/{id}.
     @http.route('/api/agent/task/<int:task_id>/start', type='http', methods=['POST'], auth='public', csrf=False)
     def start_task(self, task_id, **kwargs):
@@ -305,31 +326,53 @@ class AgentApiController(http.Controller):
         content = payload.get('content') or payload.get('message')
         if not content:
             return self._error('content is required', status=400, code='validation_error')
+        agent = request.env['odoo.agent'].browse(agent_id)
+        if not agent.exists():
+            return self._error('Agent not found', status=404, code='not_found')
+        if not agent.runtime_id:
+            return self._error('Agent has no runtime', status=400, code='validation_error')
+        project_task = request.env['project.task'].browse(payload.get('project_task_id') or payload.get('task_id'))
+        if project_task and not project_task.exists():
+            return self._error('Project task not found', status=404, code='not_found')
         message = request.env['odoo.agent.chat.message'].send_user_message(
             agent_id,
             content,
-            task_id=payload.get('task_id'),
+            project_task_id=project_task.id if project_task else None,
         )
-        return self._json_response({'status': 'ok', 'message_id': message.id})
+        execution = request.env['odoo.agent.execution'].create({
+            'name': payload.get('name') or content[:80] or agent.display_name,
+            'prompt': content,
+            'agent_id': agent.id,
+            'runtime_id': agent.runtime_id.id,
+            'project_id': project_task.project_id.id if project_task else False,
+            'task_id': project_task.id if project_task else False,
+            'requested_by_id': request.env.user.id,
+            'company_id': agent.company_id.id or request.env.company.id,
+            'source': 'chat',
+            'chat_message_id': message.id,
+        })
+        message.write({
+            'execution_id': execution.id,
+            'delivery_state': 'queued',
+        })
+        return self._json_response({
+            'status': 'ok',
+            'message_id': message.id,
+            'execution_id': execution.id,
+        })
 
     @http.route('/api/agent/<int:agent_id>/chat/messages', type='http', methods=['GET'], auth='user', csrf=False)
     def get_chat_messages(self, agent_id, **kwargs):
         payload = self._payload()
         messages = request.env['odoo.agent.chat.message'].get_conversation(
             agent_id,
+            project_task_id=payload.get('project_task_id'),
             limit=int(payload.get('limit') or 50),
         )
         return self._json_response({
             'status': 'ok',
             'messages': [
-                {
-                    'id': message.id,
-                    'author_type': message.author_type,
-                    'author_name': message.author_id.name,
-                    'content': message.content,
-                    'timestamp': fields.Datetime.to_string(message.timestamp),
-                    'is_read': message.is_read,
-                }
+                message.to_runtime_payload()
                 for message in messages
             ],
         })

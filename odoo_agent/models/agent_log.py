@@ -63,6 +63,13 @@ class AgentLog(models.Model):
         string='Company',
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        logs = super().create(vals_list)
+        for log in logs:
+            log._notify_log_event()
+        return logs
+
     @api.model
     def add_log(self, execution_id, level, message, command=None, exit_code=None):
         return self.create({
@@ -87,3 +94,28 @@ class AgentLog(models.Model):
         if level:
             domain.append(('level', '=', level))
         return self.search(domain, limit=limit)
+
+    def _notify_log_event(self):
+        self.ensure_one()
+        if not self.execution_id:
+            return
+        payload = {
+            'event': 'log_created',
+            'log_id': self.id,
+            'execution_id': self.execution_id.id,
+            'agent_id': self.execution_id.agent_id.id,
+            'runtime_id': self.execution_id.runtime_id.id,
+            'level': self.level,
+            'message': self.message,
+            'timestamp': fields.Datetime.to_string(self.timestamp) if self.timestamp else None,
+        }
+        self.env['bus.bus']._sendone(
+            f'odoo_agent.execution.{self.execution_id.id}',
+            'odoo_agent',
+            payload,
+        )
+        self.env['bus.bus']._sendone(
+            f'odoo_agent.agent.{self.execution_id.agent_id.id}',
+            'odoo_agent',
+            payload,
+        )

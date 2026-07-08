@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 17:13+0000\n"
+"POT-Creation-Date: 2026-07-08 17:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,27 +16,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: odoo_agent/models/agent_execution.py:316
+#: odoo_agent/models/agent_execution.py:354
 msgid "%(parent)s → %(agent)s"
 msgstr "%(parent)s → %(agent)s"
 
-#: odoo_agent/models/agent_execution.py:332
+#: odoo_agent/models/agent_execution.py:370
 msgid "<p><b>%s</b> delegated work to: %s.</p>"
 msgstr "<p><b>%s</b> agenteak lana delegatu dio honi: %s.</p>"
 
-#: odoo_agent/models/agent_execution.py:207
+#: odoo_agent/models/agent_execution.py:241
 msgid "<p>Agent <b>%s</b> completed execution <b>%s</b>.</p>"
 msgstr "<p><b>%s</b> agenteak <b>%s</b> exekuzioa osatu du.</p>"
 
-#: odoo_agent/models/agent_execution.py:221
+#: odoo_agent/models/agent_execution.py:256
 msgid "<p>Agent <b>%s</b> failed execution <b>%s</b>.</p><p>%s</p>"
 msgstr "<p><b>%s</b> agenteak huts egin du <b>%s</b> exekuzioan.</p><p>%s</p>"
 
-#: odoo_agent/models/agent_execution.py:247
+#: odoo_agent/models/agent_execution.py:283
 msgid "<p>Agent execution <b>%s</b> was cancelled.</p>"
 msgstr "<p><b>%s</b> agentearen exekuzioa ezeztatu da.</p>"
 
-#: odoo_agent/models/agent_execution.py:338
+#: odoo_agent/models/agent_execution.py:376
 msgid "<p>Skipped mentioned agents without runtime: %s.</p>"
 msgstr "<p>Runtime gabeko aipatutako agenteak saltatu dira: %s.</p>"
 
@@ -83,10 +83,11 @@ msgstr "Exekuzio aktiboak"
 msgid "Active Tasks"
 msgstr "Aktibo Zereginak"
 
-#: odoo_agent/models/agent_chat.py:13
+#: odoo_agent/models/agent_chat.py:14
 #: odoo_agent/models/agent_execution.py:20
 #: odoo_agent/models/agent_log.py:32
 #: odoo_agent/models/agent_task.py:17
+#: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
 #: odoo_agent/views/project_task_inherit_views.xml:1
@@ -104,6 +105,10 @@ msgstr "<b>%s</b> agenteak huts egin du zereginean: %s"
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Assigned"
 msgstr "Agentea esleituta"
+
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "Agent Chat Message"
+msgstr "Agentea Chat Mezua"
 
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Done"
@@ -137,23 +142,23 @@ msgstr "Agentearen egoera"
 msgid "Agent Working"
 msgstr "Agentea lanean"
 
-#: odoo_agent/models/agent_execution.py:336
+#: odoo_agent/models/agent_execution.py:374
 msgid "Agent delegation created"
 msgstr "Agentearen delegazioa sortu da"
 
-#: odoo_agent/models/agent_execution.py:341
+#: odoo_agent/models/agent_execution.py:379
 msgid "Agent delegation skipped"
 msgstr "Agentearen delegazioa saltatu da"
 
-#: odoo_agent/models/agent_execution.py:364
+#: odoo_agent/models/agent_execution.py:402
 msgid "Agent execution finished"
 msgstr "Agentearen exekuzioa amaitu da"
 
-#: odoo_agent/models/agent_execution.py:171
+#: odoo_agent/models/agent_execution.py:196
 msgid "Agent execution queued"
 msgstr "Agentearen exekuzioa ilaran"
 
-#: odoo_agent/models/agent_execution.py:170
+#: odoo_agent/models/agent_execution.py:195
 msgid "Agent execution queued for <b>%s</b>."
 msgstr "Agentearen exekuzioa ilaran jarri da <b>%s</b>rentzat."
 
@@ -206,15 +211,15 @@ msgstr "Esleitu IA agente bati..."
 msgid "Assigned agent"
 msgstr "Esleitutako agentea"
 
-#: odoo_agent/models/agent_execution.py:114
+#: odoo_agent/models/agent_execution.py:139
 msgid "Attempt"
 msgstr "Saiakera"
 
-#: odoo_agent/models/agent_chat.py:20
+#: odoo_agent/models/agent_chat.py:29
 msgid "Author"
 msgstr "Egilea"
 
-#: odoo_agent/models/agent_chat.py:26
+#: odoo_agent/models/agent_chat.py:35
 msgid "Author Type"
 msgstr "Egile mota"
 
@@ -234,11 +239,11 @@ msgstr "Ezeztatu"
 msgid "Cancel Agent"
 msgstr "Ezeztatu Agentea"
 
-#: odoo_agent/models/agent_execution.py:110
+#: odoo_agent/models/agent_execution.py:135
 msgid "Cancellation Reason"
 msgstr "Ezeztapen arrazoia"
 
-#: odoo_agent/models/agent_execution.py:233
+#: odoo_agent/models/agent_execution.py:268
 msgid "Cancellation requested from Odoo."
 msgstr "Ezeztapena Odootik eskatu da."
 
@@ -256,6 +261,18 @@ msgstr "Gaitasunak runtimeak jakinarazten ditu: onartutako motorrak, instalatuta
 msgid "Category"
 msgstr "Kategoria"
 
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Chat"
+msgstr "Txata"
+
+#: odoo_agent/models/agent_execution.py:111
+msgid "Chat Messages"
+msgstr "Txat mezuak"
+
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Chat executions keep the user request, runtime work, and agent replies traceable. Live notifications are published on the Odoo bus for this execution and agent."
+msgstr "Txat exekuzioek erabiltzailearen eskaera, runtimearen lana eta agentearen erantzunak trazagarri mantentzen dituzte. Zuzeneko jakinarazpenak Odoo busean argitaratzen dira exekuzio eta agente honentzat."
+
 #: odoo_agent/models/agent_execution.py:66
 msgid "Child Executions"
 msgstr "Child Exekuzioak"
@@ -271,7 +288,8 @@ msgid "Command executed by the runtime for this agent."
 msgstr "Runtimeak agente honentzat exekutatutako komandoa."
 
 #: odoo_agent/models/agent.py:114
-#: odoo_agent/models/agent_execution.py:129
+#: odoo_agent/models/agent_chat.py:75
+#: odoo_agent/models/agent_execution.py:154
 #: odoo_agent/models/agent_log.py:59
 #: odoo_agent/models/agent_mcp_server.py:37
 #: odoo_agent/models/agent_runtime.py:60
@@ -293,7 +311,7 @@ msgstr "Osatu"
 msgid "Completed"
 msgstr "Osatuta"
 
-#: odoo_agent/models/agent_execution.py:112
+#: odoo_agent/models/agent_execution.py:137
 #: odoo_agent/models/agent_task.py:53
 msgid "Completed At"
 msgstr "Osatuta At"
@@ -307,13 +325,18 @@ msgid "Delegated"
 msgstr "Delegatua"
 
 #: odoo_agent/models/agent_execution.py:71
-#: odoo_agent/models/agent_execution.py:280
+#: odoo_agent/models/agent_execution.py:318
 msgid "Delegated Executions"
 msgstr "Delegated Exekuzioak"
 
 #: odoo_agent/views/agent_execution_views.xml:1
 msgid "Delegations"
 msgstr "Delegazioak"
+
+#: odoo_agent/models/agent_chat.py:62
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "Delivery State"
+msgstr "Bidalketa egoera"
 
 #: odoo_agent/views/agent_mcp_server_views.xml:1
 msgid "Describe what tools or data this server exposes and which business process it supports."
@@ -334,14 +357,14 @@ msgstr "Gailuaren informazioa"
 
 #: odoo_agent/models/agent_stage_map.py:43
 msgid "Display Name"
-msgstr "Izena erakutsi"
+msgstr "Display Izena"
 
 #: odoo_agent/views/agent_views.xml:1
 msgid "Each execution is one auditable run against a Project task: queued, running, waiting for input, completed, failed, or cancelled."
 msgstr "Exekuzio bakoitza Proiektu zeregin baten aurkako exekuzio auditagarria da: ilaran, exekutatzen, sarreraren zain, osatuta, huts eginda edo ezeztatuta."
 
 #: odoo_agent/models/agent.py:34
-#: odoo_agent/models/agent_execution.py:117
+#: odoo_agent/models/agent_execution.py:142
 #: odoo_agent/views/agent_views.xml:1
 msgid "Engine"
 msgstr "Motorra"
@@ -356,7 +379,7 @@ msgstr "Ingurunea"
 msgid "Error"
 msgstr "Errorea"
 
-#: odoo_agent/models/agent_execution.py:109
+#: odoo_agent/models/agent_execution.py:134
 #: odoo_agent/models/agent_task.py:51
 msgid "Error Message"
 msgstr "Errorea Mezua"
@@ -366,12 +389,14 @@ msgstr "Errorea Mezua"
 msgid "Errors"
 msgstr "Erroreak"
 
+#: odoo_agent/models/agent_chat.py:22
 #: odoo_agent/models/agent_log.py:13
+#: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_log_views.xml:1
 msgid "Execution"
 msgstr "Exekuzioa"
 
-#: odoo_agent/models/agent_execution.py:269
+#: odoo_agent/models/agent_execution.py:307
 #: odoo_agent/models/agent_task.py:63
 #: odoo_agent/views/agent_task_views.xml:1
 msgid "Execution Logs"
@@ -405,10 +430,19 @@ msgstr "Huts eginda"
 msgid "For stdio servers, add one argument per line or a JSON-style list understood by the runtime adapter. Avoid secrets here; use Environment for sensitive values."
 msgstr "Stdio zerbitzarietarako, gehitu argumentu bat lerro bakoitzeko edo runtime egokitzaileak ulertzen duen JSON estiloko zerrenda. Ez jarri sekreturik hemen; erabili Ingurunea balio sentikorretarako."
 
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "From Agents"
+msgstr "Agenteetatik"
+
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "From Users"
+msgstr "Erabiltzaileetatik"
+
 #: odoo_agent/views/agent_runtime_views.xml:1
 msgid "Generate API Key"
 msgstr "Sortu API gakoa"
 
+#: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_log_views.xml:1
 #: odoo_agent/views/agent_runtime_views.xml:1
@@ -416,7 +450,7 @@ msgstr "Sortu API gakoa"
 #: odoo_agent/views/agent_task_views.xml:1
 #: odoo_agent/views/agent_views.xml:1
 msgid "Group By"
-msgstr "Group By"
+msgstr "Taldekatu honen arabera"
 
 #: odoo_agent/models/agent_runtime.py:21
 msgid "IP Address"
@@ -441,7 +475,7 @@ msgstr "Abian"
 msgid "Instructions"
 msgstr "Argibideak"
 
-#: odoo_agent/models/agent_chat.py:47
+#: odoo_agent/models/agent_chat.py:74
 msgid "Is Read"
 msgstr "Irakurrita"
 
@@ -449,7 +483,7 @@ msgstr "Irakurrita"
 msgid "LLM model to use"
 msgstr "Erabili beharreko LLM eredua"
 
-#: odoo_agent/models/agent_execution.py:113
+#: odoo_agent/models/agent_execution.py:138
 msgid "Last Heartbeat"
 msgstr "Azken heartbeat-a"
 
@@ -487,6 +521,10 @@ msgstr "Agentearen legacy zeregina"
 msgid "Legacy Max Concurrent Tasks"
 msgstr "Legacy zeregin paraleloen gehienekoa"
 
+#: odoo_agent/models/agent_chat.py:45
+msgid "Legacy Related Task"
+msgstr "Lotutako legacy zeregina"
+
 #: odoo_agent/models/agent.py:107
 msgid "Legacy Tasks"
 msgstr "Legacy zereginak"
@@ -508,12 +546,12 @@ msgstr "Lehendik dagoen Odoo proiektu zeregin batera esteka"
 msgid "Linked User"
 msgstr "Lotutako erabiltzailea"
 
-#: odoo_agent/models/agent_execution.py:128
+#: odoo_agent/models/agent_execution.py:153
 #: odoo_agent/models/agent_task.py:66
 msgid "Log Count"
 msgstr "Log kopurua"
 
-#: odoo_agent/models/agent_execution.py:123
+#: odoo_agent/models/agent_execution.py:148
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
 msgid "Logs"
@@ -544,6 +582,10 @@ msgstr "Mark Lineaz kanpo"
 msgid "Mark Online"
 msgstr "Mark Linean"
 
+#: odoo_agent/views/agent_chat_views.xml:1
+msgid "Mark as Read"
+msgstr "Markatu irakurrita"
+
 #: odoo_agent/models/agent.py:81
 msgid "Max Concurrent Executions"
 msgstr "Gehieneko exekuzio paraleloak"
@@ -560,8 +602,9 @@ msgstr "Aipatu agenteak prompt-ean @identifikatzailearekin exekuzio semeak sortz
 msgid "Mentioned Agents"
 msgstr "Aipatutako agenteak"
 
-#: odoo_agent/models/agent_chat.py:35
+#: odoo_agent/models/agent_chat.py:44
 #: odoo_agent/models/agent_log.py:56
+#: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_log_views.xml:1
 msgid "Message"
 msgstr "Mezua"
@@ -624,6 +667,7 @@ msgstr "Proiektua Stage"
 
 #: odoo_agent/models/agent_execution.py:45
 #: odoo_agent/models/project_task_inherit.py:72
+#: odoo_agent/views/agent_chat_views.xml:1
 msgid "Project Task"
 msgstr "Proiektua Zeregina"
 
@@ -636,6 +680,7 @@ msgstr "Prompt-a"
 msgid "Provides a native multi-agent execution architecture inside Odoo. - Agent Runtimes: external machines (N100, Mac Mini, etc.) connected via API - AI Agents: configurable entities with instructions, skills, and runtime assignment - Agent Skills: reusable instruction packs - Agent Executions: repeatable runtime work units linked to project.task - Execution Logs: detailed command history with streaming support - Agent Chat: direct messaging between users and AI agents - Stage Mapping: configurable agent status to project stage mapping - REST API: bidirectional communication with external runtimes"
 msgstr "Odoo barruan multiagente exekuzio arkitektura natiboa eskaintzen du. - Agente runtimeak: API bidez konektatutako kanpoko makinak - IA agenteak: argibideak, skillak eta esleitutako runtimea dituzten entitate konfiguragarriak - Agentearen skillak: argibide-pakete berrerabilgarriak - Agentearen exekuzioak: project.task-i lotutako lan-unitate errepikagarriak - Exekuzio logak: streaming euskarria duen komando-historial xehea - Agentearen txata: erabiltzaileen eta IA agenteen arteko mezularitza zuzena - Etapa mapaketa: agentearen egoeratik proiektu etapara mapaketa konfiguragarria - REST APIa: kanpoko runtimeekin bi noranzkoko komunikazioa"
 
+#: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_execution_views.xml:1
 msgid "Queued"
 msgstr "Ilaran"
@@ -644,15 +689,15 @@ msgstr "Ilaran"
 msgid "Queued Executions"
 msgstr "Ilarako exekuzioak"
 
-#: odoo_agent/models/agent_chat.py:36
-msgid "Related Task"
-msgstr "Related Zeregina"
+#: odoo_agent/models/agent_chat.py:50
+msgid "Related Project Task"
+msgstr "Lotutako proiektu zeregina"
 
 #: odoo_agent/models/agent_execution.py:52
 msgid "Requested By"
 msgstr "Eskatzailea"
 
-#: odoo_agent/models/agent_execution.py:108
+#: odoo_agent/models/agent_execution.py:133
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
 msgid "Result"
@@ -671,7 +716,7 @@ msgid "Retry Agent"
 msgstr "Saiatu berriro Agentea"
 
 #: odoo_agent/models/agent.py:92
-#: odoo_agent/models/agent_execution.py:116
+#: odoo_agent/models/agent_execution.py:141
 msgid "Retry Limit"
 msgstr "Berriro saiatzeko muga"
 
@@ -725,18 +770,27 @@ msgstr "Skillak"
 msgid "Skills are reusable capability packs injected into the final prompt. Add only the skills this agent needs; too many skills make executions noisy and harder to audit."
 msgstr "Skillak azken prompt-ean txertatzen diren gaitasun-pakete berrerabilgarriak dira. Gehitu agente honek behar dituenak bakarrik; skill gehiegik exekuzioak zaratatsuago eta auditatzeko zailago bihurtzen dituzte."
 
+#: odoo_agent/models/agent_execution.py:91
+#: odoo_agent/views/agent_execution_views.xml:1
+msgid "Source"
+msgstr "Jatorria"
+
+#: odoo_agent/models/agent_execution.py:103
+msgid "Source Chat Message"
+msgstr "Jatorrizko txat mezua"
+
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
 msgid "Start"
 msgstr "Hasi"
 
-#: odoo_agent/models/agent_execution.py:111
+#: odoo_agent/models/agent_execution.py:136
 #: odoo_agent/models/agent_task.py:52
 msgid "Started At"
 msgstr "Hasiera data"
 
 #: odoo_agent/models/agent.py:54
-#: odoo_agent/models/agent_execution.py:91
+#: odoo_agent/models/agent_execution.py:116
 #: odoo_agent/models/agent_runtime.py:22
 #: odoo_agent/models/agent_task.py:36
 #: odoo_agent/views/agent_execution_views.xml:1
@@ -766,7 +820,7 @@ msgstr "Exekutatzen ari den komandoa/ekintza"
 msgid "The selected AI agent must have a runtime."
 msgstr "Hautatutako IA agenteak runtime bat izan behar du."
 
-#: odoo_agent/models/agent_execution.py:161
+#: odoo_agent/models/agent_execution.py:186
 msgid "The selected agent must have a runtime before creating an execution."
 msgstr "Hautatutako agenteak runtime bat izan behar du exekuzioa sortu aurretik."
 
@@ -779,11 +833,11 @@ msgid "These agents can use this MCP server during execution. Keep the list smal
 msgstr "Agente hauek MCP zerbitzari hau erabil dezakete exekuzioan. Mantendu zerrenda txikia tresna edo datuetara ustekabeko sarbidea murrizteko."
 
 #: odoo_agent/models/agent.py:91
-#: odoo_agent/models/agent_execution.py:115
+#: odoo_agent/models/agent_execution.py:140
 msgid "Timeout (seconds)"
 msgstr "Timeouta (segundoak)"
 
-#: odoo_agent/models/agent_chat.py:41
+#: odoo_agent/models/agent_chat.py:56
 #: odoo_agent/models/agent_log.py:38
 msgid "Timestamp"
 msgstr "Data eta ordua"
@@ -837,6 +891,6 @@ msgstr "Lanean ari diren agenteak"
 msgid "Write the agent's operating rules here: role, boundaries, project context, expected output format, and what it must never do without human approval. Other agents can mention this agent with its @handle."
 msgstr "Idatzi hemen agentearen funtzionamendu-arauak: rola, mugak, proiektuaren testuingurua, espero den irteera formatua eta giza onarpenik gabe inoiz egin behar ez duena. Beste agenteek agente hau aipa dezakete bere @identifikatzailearekin."
 
-#: odoo_agent/models/agent_execution.py:346
+#: odoo_agent/models/agent_execution.py:384
 msgid "You were mentioned from execution \"%(execution)s\" by agent \"%(agent)s\". Focus only on the part of the task that matches your role. Original prompt: %(prompt)s"
 msgstr "\"%(agent)s\" agenteak \"%(execution)s\" exekuziotik aipatu zaitu. Zure rolari dagokion zeregin zatian bakarrik jarri arreta. Jatorrizko prompt-a: %(prompt)s"

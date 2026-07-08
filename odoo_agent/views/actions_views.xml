@@ -57,6 +57,12 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="action_agent_chat_message" model="ir.actions.act_window">
+        <field name="name">Agent Chats</field>
+        <field name="res_model">odoo.agent.chat.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="action_agent_stage_map" model="ir.actions.act_window">
         <field name="name">Stage Mapping</field>
         <field name="res_model">odoo.agent.stage.map</field>

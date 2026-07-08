@@ -26,6 +26,30 @@ class TestAgentExecution(AgentTestMixin):
         self.assertEqual(payload['agent']['skills'][0]['name'], self.skill.name)
         self.assertEqual(payload['agent']['mcp_servers'][0]['key'], self.mcp_server.server_key)
 
+    def test_chat_execution_payload_contains_conversation(self):
+        message = self.env['odoo.agent.chat.message'].send_user_message(
+            self.agent.id,
+            'Can you review this task?',
+            project_task_id=self.task.id,
+        )
+        execution = self.env['odoo.agent.execution'].create({
+            'name': 'Chat Test',
+            'prompt': message.content,
+            'agent_id': self.agent.id,
+            'task_id': self.task.id,
+            'company_id': self.company.id,
+            'source': 'chat',
+            'chat_message_id': message.id,
+        })
+        message.execution_id = execution.id
+
+        payload = execution.to_runtime_payload()
+
+        self.assertEqual(payload['source'], 'chat')
+        self.assertEqual(payload['chat_message_id'], message.id)
+        self.assertTrue(payload['conversation'])
+        self.assertEqual(payload['conversation'][-1]['content'], message.content)
+
     def test_execution_lifecycle_updates_agent_and_task(self):
         execution = self.env['odoo.agent.execution'].create({
             'name': 'Lifecycle Test',
@@ -46,6 +70,72 @@ class TestAgentExecution(AgentTestMixin):
         self.assertEqual(execution.status, 'completed')
         self.assertEqual(execution.result, 'Lifecycle completed.')
         self.assertEqual(self.agent.status, 'idle')
+
+    def test_chat_execution_completion_creates_agent_reply(self):
+        message = self.env['odoo.agent.chat.message'].send_user_message(
+            self.agent.id,
+            'Please answer from the runtime.',
+            project_task_id=self.task.id,
+        )
+        execution = self.env['odoo.agent.execution'].create({
+            'name': 'Chat Reply Test',
+            'prompt': message.content,
+            'agent_id': self.agent.id,
+            'task_id': self.task.id,
+            'company_id': self.company.id,
+            'source': 'chat',
+            'chat_message_id': message.id,
+        })
+        message.execution_id = execution.id
+
+        execution.action_complete(result='Runtime answer.')
+
+        agent_reply = self.env['odoo.agent.chat.message'].search([
+            ('execution_id', '=', execution.id),
+            ('author_type', '=', 'agent'),
+        ])
+        self.assertEqual(len(agent_reply), 1)
+        self.assertEqual(agent_reply.content, 'Runtime answer.')
+        self.assertEqual(message.delivery_state, 'delivered')
+
+    def test_bus_notifications_are_sent_for_chat_log_and_execution(self):
+        calls = []
+        bus = self.env['bus.bus']
+        original = type(bus)._sendone
+
+        def patched_sendone(record, target, notification_type, message):
+            calls.append((target, notification_type, message))
+            return original(record, target, notification_type, message)
+
+        type(bus)._sendone = patched_sendone
+        try:
+            message = self.env['odoo.agent.chat.message'].send_user_message(
+                self.agent.id,
+                'Notify me.',
+                project_task_id=self.task.id,
+            )
+            execution = self.env['odoo.agent.execution'].create({
+                'name': 'Bus Test',
+                'prompt': 'Notify me.',
+                'agent_id': self.agent.id,
+                'task_id': self.task.id,
+                'company_id': self.company.id,
+                'source': 'chat',
+                'chat_message_id': message.id,
+            })
+            self.env['odoo.agent.log'].create({
+                'execution_id': execution.id,
+                'level': 'info',
+                'message': 'Live log.',
+            })
+            execution.action_start()
+        finally:
+            type(bus)._sendone = original
+
+        event_names = {call[2].get('event') for call in calls if call[1] == 'odoo_agent'}
+        self.assertIn('chat_message_created', event_names)
+        self.assertIn('log_created', event_names)
+        self.assertIn('execution_updated', event_names)
 
     def test_execution_retry_creates_child_attempt(self):
         execution = self.env['odoo.agent.execution'].create({

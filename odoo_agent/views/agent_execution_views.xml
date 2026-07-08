@@ -9,6 +9,7 @@
                 <field name="status" widget="badge"/>
                 <field name="agent_id"/>
                 <field name="runtime_id"/>
+                <field name="source"/>
                 <field name="task_id"/>
                 <field name="attempt"/>
                 <field name="started_at"/>
@@ -45,6 +46,8 @@
                             <field name="name"/>
                             <field name="agent_id"/>
                             <field name="runtime_id"/>
+                            <field name="source"/>
+                            <field name="chat_message_id" readonly="1"/>
                             <field name="requested_by_id" readonly="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
@@ -79,6 +82,21 @@
                                     <field name="message"/>
                                     <field name="command"/>
                                     <field name="exit_code"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="chat" string="Chat" invisible="source != 'chat'">
+                            <div class="alert alert-light" role="alert">
+                                Chat executions keep the user request, runtime work, and agent replies traceable.
+                                Live notifications are published on the Odoo bus for this execution and agent.
+                            </div>
+                            <field name="chat_message_ids" nolabel="1" readonly="1">
+                                <list decoration-info="author_type == 'agent'">
+                                    <field name="timestamp"/>
+                                    <field name="author_type" widget="badge"/>
+                                    <field name="author_id"/>
+                                    <field name="delivery_state" widget="badge"/>
+                                    <field name="content"/>
                                 </list>
                             </field>
                         </page>
@@ -120,12 +138,15 @@
                 <field name="agent_id"/>
                 <field name="runtime_id"/>
                 <field name="task_id"/>
+                <field name="source"/>
                 <filter name="queued" string="Queued" domain="[('status', '=', 'queued')]"/>
                 <filter name="running" string="Running" domain="[('status', '=', 'running')]"/>
                 <filter name="waiting_input" string="Waiting for Input" domain="[('status', '=', 'waiting_input')]"/>
                 <filter name="failed" string="Failed" domain="[('status', '=', 'failed')]"/>
+                <filter name="chat" string="Chat" domain="[('source', '=', 'chat')]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                    <filter name="group_source" string="Source" context="{'group_by': 'source'}"/>
                     <filter name="group_agent" string="Agent" context="{'group_by': 'agent_id'}"/>
                     <filter name="group_runtime" string="Runtime" context="{'group_by': 'runtime_id'}"/>
                 </group>
