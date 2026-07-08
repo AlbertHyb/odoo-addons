@@ -117,8 +117,7 @@ class ProjectTask(models.Model):
                 agent,
                 content,
                 project_task=task,
-                name=_('%(task)s — message to %(agent)s') % {
-                    'task': task.display_name,
+                name=_('Chat message to %(agent)s') % {
                     'agent': agent.display_name if agent else _('Agent'),
                 },
             )

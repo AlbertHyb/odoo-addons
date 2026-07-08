@@ -92,6 +92,8 @@ class TestProjectTaskAgentFlow(AgentTestMixin):
         self.assertEqual(execution.source, 'chat')
         self.assertEqual(execution.task_id, self.task)
         self.assertEqual(execution.chat_message_id, message)
+        self.assertEqual(execution.name, 'Chat message to %s' % self.agent.display_name)
+        self.assertNotIn(self.task.display_name, execution.name)
         self.assertEqual(self.task.latest_execution_id, execution)
         self.assertFalse(self.task.agent_chat_composer_body)
 

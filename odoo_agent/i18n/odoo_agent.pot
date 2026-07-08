@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo_agent 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 19:43+0000\n"
+"POT-Creation-Date: 2026-07-08 20:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -18,10 +18,6 @@ msgstr ""
 
 #: odoo_agent/models/agent_execution.py:354
 msgid "%(parent)s → %(agent)s"
-msgstr ""
-
-#: odoo_agent/models/project_task_inherit.py:120
-msgid "%(task)s — message to %(agent)s"
 msgstr ""
 
 #: odoo_agent/models/agent_execution.py:370
@@ -91,7 +87,7 @@ msgstr ""
 #: odoo_agent/models/agent_execution.py:20
 #: odoo_agent/models/agent_log.py:32
 #: odoo_agent/models/agent_task.py:17
-#: odoo_agent/models/project_task_inherit.py:122
+#: odoo_agent/models/project_task_inherit.py:121
 #: odoo_agent/views/agent_chat_views.xml:1
 #: odoo_agent/views/agent_execution_views.xml:1
 #: odoo_agent/views/agent_task_views.xml:1
@@ -120,7 +116,7 @@ msgid "Agent Communication Count"
 msgstr ""
 
 #: odoo_agent/models/project_task_inherit.py:52
-#: odoo_agent/models/project_task_inherit.py:180
+#: odoo_agent/models/project_task_inherit.py:179
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Communications"
 msgstr ""
@@ -134,7 +130,7 @@ msgid "Agent Execution Count"
 msgstr ""
 
 #: odoo_agent/models/project_task_inherit.py:19
-#: odoo_agent/models/project_task_inherit.py:165
+#: odoo_agent/models/project_task_inherit.py:164
 msgid "Agent Executions"
 msgstr ""
 
@@ -142,7 +138,7 @@ msgstr ""
 msgid "Agent Failed"
 msgstr ""
 
-#: odoo_agent/models/project_task_inherit.py:154
+#: odoo_agent/models/project_task_inherit.py:153
 #: odoo_agent/views/project_task_inherit_views.xml:1
 msgid "Agent Logs"
 msgstr ""
@@ -161,11 +157,11 @@ msgstr ""
 msgid "Agent Working"
 msgstr ""
 
-#: odoo_agent/models/project_task_inherit.py:131
+#: odoo_agent/models/project_task_inherit.py:130
 msgid "Agent communication queued"
 msgstr ""
 
-#: odoo_agent/models/project_task_inherit.py:130
+#: odoo_agent/models/project_task_inherit.py:129
 msgid "Agent communication queued for %s."
 msgstr ""
 
@@ -306,6 +302,10 @@ msgstr ""
 
 #: odoo_agent/views/agent_execution_views.xml:1
 msgid "Chat executions keep the user request, runtime work, and agent replies traceable. Live notifications are published on the Odoo bus for this execution and agent."
+msgstr ""
+
+#: odoo_agent/models/project_task_inherit.py:120
+msgid "Chat message to %(agent)s"
 msgstr ""
 
 #: odoo_agent/models/agent_execution.py:66

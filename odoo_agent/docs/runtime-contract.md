@@ -83,6 +83,8 @@ Runtime polling then returns the execution with additional chat context:
 
 When the runtime completes the execution, Odoo creates an agent chat reply from the execution result.
 
+For `source=chat`, runtimes should treat `prompt` as the current user message. They should not prepend the execution `name` or Project task title as the primary task instruction, otherwise short messages like "hello" can be incorrectly interpreted as requests to work on the task title.
+
 The runtime can also send intermediate chat replies with:
 
 ```http
