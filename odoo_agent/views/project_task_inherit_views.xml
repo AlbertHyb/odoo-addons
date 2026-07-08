@@ -44,9 +44,10 @@
 
                         <div class="o_agent_comms_thread">
                             <field name="agent_chat_message_ids" nolabel="1" readonly="1" mode="kanban" class="o_agent_comms_messages">
-                                <kanban class="o_agent_comms_kanban" create="0" edit="0" delete="0">
+                                <kanban class="o_agent_comms_kanban" create="0" edit="0" delete="0" default_order="timestamp asc, id asc">
                                     <field name="timestamp"/>
                                     <field name="author_type"/>
+                                    <field name="author_id"/>
                                     <field name="agent_id"/>
                                     <field name="content"/>
                                     <field name="delivery_state"/>
@@ -61,12 +62,20 @@
                                                 <div class="o_agent_message_body">
                                                     <div class="o_agent_message_meta">
                                                         <div class="o_agent_message_author">
-                                                            <field name="agent_id"/>
-                                                            <span t-if="record.author_type.raw_value == 'user'">User</span>
+                                                            <t t-if="record.author_type.raw_value == 'agent'">
+                                                                <field name="agent_id"/>
+                                                                <span class="o_agent_message_role">Agent</span>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <field name="author_id"/>
+                                                                <span class="o_agent_message_role">User</span>
+                                                            </t>
                                                         </div>
                                                         <div class="o_agent_message_context">
                                                             <field name="timestamp"/>
-                                                            <span class="o_agent_message_delivery"><field name="delivery_state"/></span>
+                                                            <span t-att-class="'o_agent_message_delivery o_agent_message_delivery_' + record.delivery_state.raw_value">
+                                                                <field name="delivery_state"/>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <div class="o_agent_message_content">
