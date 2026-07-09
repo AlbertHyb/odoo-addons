@@ -2,6 +2,8 @@
 
 Use this checklist before publishing the addon and runtime repositories.
 
+- [ ] Run the MVP testing plan in [`mvp-testing-plan.md`](mvp-testing-plan.md).
+
 ## Repository hygiene
 
 - [ ] No local absolute paths in public instructions.
