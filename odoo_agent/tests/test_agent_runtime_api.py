@@ -39,22 +39,80 @@ class TestAgentRuntimeApi(HttpCase):
             'company_id': cls.company.id,
         })
 
-    def _json_request(self, path, api_key=None, payload=None):
-        headers = {'Content-Type': 'application/json'}
+    def _json_request(self, path, api_key=None, payload=None, headers=None):
+        request_headers = {'Content-Type': 'application/json'}
+        request_headers.update(headers or {})
         if api_key:
-            headers['X-API-Key'] = api_key
+            request_headers['X-API-Key'] = api_key
         response = self.url_open(
             path,
             data=json.dumps(payload or {}).encode(),
-            headers=headers,
+            headers=request_headers,
+        )
+        data = json.loads(response.content)
+        return response.status_code, data
+
+    def _form_request(self, path, payload=None):
+        response = self.url_open(
+            path,
+            data=payload or {},
+            headers={'Content-Type': 'application/x-www-form-urlencoded'},
         )
         data = json.loads(response.content)
         return response.status_code, data
 
     def test_heartbeat_requires_valid_api_key(self):
-        status, payload = self._json_request('/api/agent/runtime/heartbeat', api_key='invalid')
+        status, payload = self._json_request(
+            '/api/agent/runtime/heartbeat',
+            api_key='invalid',
+        )
         self.assertEqual(status, 401)
         self.assertIn('error', payload)
+
+    def test_heartbeat_accepts_api_key_header(self):
+        status, payload = self._json_request(
+            '/api/agent/runtime/heartbeat',
+            api_key=self.runtime.api_key,
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get('status'), 'ok')
+        self.assertEqual(payload.get('runtime_id'), self.runtime.id)
+
+    def test_heartbeat_accepts_api_key_json_body(self):
+        status, payload = self._json_request(
+            '/api/agent/runtime/heartbeat',
+            payload={'api_key': self.runtime.api_key},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get('status'), 'ok')
+        self.assertEqual(payload.get('runtime_id'), self.runtime.id)
+
+    def test_heartbeat_accepts_api_key_form_body(self):
+        status, payload = self._form_request(
+            '/api/agent/runtime/heartbeat',
+            payload={'api_key': self.runtime.api_key},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get('status'), 'ok')
+        self.assertEqual(payload.get('runtime_id'), self.runtime.id)
+
+    def test_heartbeat_accepts_bearer_token(self):
+        status, payload = self._json_request(
+            '/api/agent/runtime/heartbeat',
+            headers={'Authorization': f'Bearer {self.runtime.api_key}'},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get('status'), 'ok')
+        self.assertEqual(payload.get('runtime_id'), self.runtime.id)
+
+    def test_heartbeat_strips_api_key_whitespace(self):
+        status, payload = self._json_request(
+            '/api/agent/runtime/heartbeat',
+            api_key=f'  {self.runtime.api_key}  ',
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(payload.get('status'), 'ok')
+        self.assertEqual(payload.get('runtime_id'), self.runtime.id)
 
     def test_poll_returns_owned_execution_payload(self):
         status, payload = self._json_request(

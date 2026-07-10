@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'AI Agent System',
-    'version': '18.0.1.6.3',
+    'version': '18.0.1.6.4',
     'category': 'Productivity',
     'summary': 'AI Agent management: runtimes, agents, executions, logs, chat, MCP, and stage mapping',
     'description': """

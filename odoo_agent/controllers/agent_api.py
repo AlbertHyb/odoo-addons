@@ -1,10 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+import logging
 
 from odoo import fields, http
 from odoo.http import Response, request
 from odoo.tools import html2plaintext
+
+
+_logger = logging.getLogger(__name__)
 
 
 class AgentApiController(http.Controller):
@@ -37,12 +41,53 @@ class AgentApiController(http.Controller):
             data['code'] = code
         return self._json_response(data, status=status)
 
-    def _authenticate_runtime(self):
-        payload = self._payload()
-        api_key = payload.get('api_key') or request.httprequest.headers.get('X-API-Key')
+    def _runtime_api_key_from_request(self):
+        headers = request.httprequest.headers
+        api_key = headers.get('X-API-Key') or headers.get('X-Odoo-Agent-Api-Key')
+
         if not api_key:
-            return request.env['odoo.agent.runtime']
-        return request.env['odoo.agent.runtime'].sudo().search([('api_key', '=', api_key)], limit=1)
+            authorization = headers.get('Authorization') or ''
+            auth_scheme, _, auth_value = authorization.partition(' ')
+            if auth_scheme.lower() in ('bearer', 'apikey', 'api-key'):
+                api_key = auth_value
+
+        if not api_key:
+            form = request.httprequest.form or {}
+            api_key = form.get('api_key') or form.get('token')
+
+        if not api_key:
+            json_request = getattr(request, 'jsonrequest', None)
+            if isinstance(json_request, dict):
+                api_key = json_request.get('api_key') or json_request.get('token')
+
+        if not api_key:
+            raw = request.httprequest.get_data(cache=True, as_text=True)
+            if raw:
+                try:
+                    parsed = json.loads(raw)
+                except json.JSONDecodeError:
+                    parsed = None
+                if isinstance(parsed, dict):
+                    api_key = parsed.get('api_key') or parsed.get('token')
+
+        if api_key is None:
+            return None
+        return str(api_key).strip() or None
+
+    def _authenticate_runtime(self):
+        api_key = self._runtime_api_key_from_request()
+        Runtime = request.env['odoo.agent.runtime'].sudo()
+        if not api_key:
+            return Runtime.browse()
+
+        runtime = Runtime.search([('api_key', '=', api_key)], limit=1)
+        if not runtime:
+            _logger.warning(
+                'Invalid Odoo Agent runtime API key on database %s from %s',
+                request.env.cr.dbname,
+                request.httprequest.remote_addr,
+            )
+        return runtime
 
     def _get_runtime_execution(self, runtime, execution_id):
         execution = request.env['odoo.agent.execution'].sudo().browse(execution_id)
