@@ -22,3 +22,6 @@ Thumbs.db
 # Local agent/code intelligence caches
 .codebase-memory/
 .atl/
+
+# Private design specifications
+openspec/
