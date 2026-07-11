@@ -183,3 +183,13 @@ class TestAgentRuntimeApi(HttpCase):
         execution = self.env['odoo.agent.execution'].browse(payload['execution_id'])
         self.assertEqual(execution.source, 'chat')
         self.assertEqual(execution.chat_message_id.id, payload['message_id'])
+
+    def test_user_chat_execution_accepts_integer_agent_id(self):
+        message, execution = self.env['odoo.agent.chat.message'].create_user_execution(
+            self.agent.id,
+            'Please handle this XML-RPC chat message.',
+        )
+
+        self.assertEqual(message.agent_id, self.agent)
+        self.assertEqual(execution.agent_id, self.agent)
+        self.assertEqual(execution.chat_message_id, message)

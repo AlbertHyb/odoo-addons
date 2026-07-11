@@ -126,6 +126,8 @@ class AgentChatMessage(models.Model):
         """Create a traceable chat execution from a user message."""
         if not content:
             raise UserError(_('Write a message before sending it to the agent.'))
+        if isinstance(agent, int):
+            agent = self.env['odoo.agent'].browse(agent).exists()
         if not agent:
             raise UserError(_('Select an AI agent before sending a message.'))
         if not agent.runtime_id:
