@@ -16,7 +16,7 @@ Provides a native multi-agent execution architecture inside Odoo.
 - REST API: bidirectional communication with external runtimes
     """,
     'author': 'Nicolas Ramos',
-    'website': 'https://github.com/nicolasramos-es',
+    'website': 'https://github.com/nicolasramos',
     'depends': ['project', 'mail', 'base', 'bus'],
     'assets': {
         'web.assets_backend': [

@@ -29,7 +29,7 @@ docs/
 ## Linux install
 
 ```bash
-git clone https://github.com/nicolasramos-es/odoo-agent-runtime.git
+git clone https://github.com/nicolasramos/odoo-agent-runtime.git
 cd odoo-agent-runtime
 bash install.sh
 ```
@@ -47,7 +47,7 @@ Install as systemd service only after the manual run connects successfully.
 ## macOS install
 
 ```bash
-git clone https://github.com/nicolasramos-es/odoo-agent-runtime.git
+git clone https://github.com/nicolasramos/odoo-agent-runtime.git
 cd odoo-agent-runtime
 bash install.sh
 ```
@@ -60,7 +60,7 @@ Choose:
 ## Windows install
 
 ```powershell
-git clone https://github.com/nicolasramos-es/odoo-agent-runtime.git
+git clone https://github.com/nicolasramos/odoo-agent-runtime.git
 cd odoo-agent-runtime
 .\install.ps1
 ```
