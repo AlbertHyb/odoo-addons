@@ -23,7 +23,7 @@ Odoo resolves the key to exactly one `odoo.agent.runtime`. Every execution/log o
       "timeout_seconds": 3600,
       "agent": {
         "engine": "opencode",
-        "cli_command": "opencode run --instruction {instruction}",
+        "cli_command": "opencode run {instruction}",
         "instructions": "Agent rules",
         "skills": [],
         "mcp_servers": []

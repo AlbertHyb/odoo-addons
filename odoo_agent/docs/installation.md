@@ -108,7 +108,7 @@ python -c "print('runtime smoke ok')"
 For real usage, configure the installed CLI:
 
 ```text
-opencode run --instruction {instruction}
+opencode run {instruction}
 ```
 
 ## Send a Project task

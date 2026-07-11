@@ -56,7 +56,7 @@ The addon supports engine presets and custom commands. Production behavior is dr
 Example commands:
 
 ```text
-opencode run --instruction {instruction}
+opencode run {instruction}
 hermes run --context {instruction}
 openclaw agent --task {task_name} --context {instruction}
 claude --print {instruction}

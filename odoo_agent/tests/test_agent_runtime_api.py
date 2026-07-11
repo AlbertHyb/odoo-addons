@@ -28,7 +28,7 @@ class TestAgentRuntimeApi(HttpCase):
             'name': 'API Agent',
             'runtime_id': cls.runtime.id,
             'engine': 'opencode',
-            'cli_command': 'opencode run --instruction {instruction}',
+            'cli_command': 'opencode run {instruction}',
             'company_id': cls.company.id,
         })
         cls.execution = cls.env['odoo.agent.execution'].create({

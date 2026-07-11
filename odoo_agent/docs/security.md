@@ -37,7 +37,7 @@ The runtime executes configured commands. Keep them deterministic and auditable.
 Prefer:
 
 ```text
-opencode run --instruction {instruction}
+opencode run {instruction}
 ```
 
 Avoid:

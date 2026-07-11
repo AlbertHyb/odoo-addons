@@ -178,7 +178,7 @@ class TestAgentExecution(AgentTestMixin):
             'mention_key': 'qa',
             'runtime_id': self.runtime.id,
             'engine': 'opencode',
-            'cli_command': 'opencode run --instruction {instruction}',
+            'cli_command': 'opencode run {instruction}',
             'company_id': self.company.id,
         })
 
@@ -203,7 +203,7 @@ class TestAgentExecution(AgentTestMixin):
             'mention_key': 'qa-loop',
             'runtime_id': self.runtime.id,
             'engine': 'opencode',
-            'cli_command': 'opencode run --instruction {instruction}',
+            'cli_command': 'opencode run {instruction}',
             'company_id': self.company.id,
         })
         parent = self.env['odoo.agent.execution'].create({

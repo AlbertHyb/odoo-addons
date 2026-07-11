@@ -44,7 +44,7 @@ Recommended fields:
 ## CLI command examples
 
 ```text
-opencode run --instruction {instruction}
+opencode run {instruction}
 hermes run --context {instruction}
 openclaw agent --task {task_name} --context {instruction}
 claude --print {instruction}
