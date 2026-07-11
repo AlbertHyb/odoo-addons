@@ -16,7 +16,7 @@ This repository contains Odoo addons only.
 
 Runtime daemons, OS installers, service files, and machine-side execution code live in a separate repository:
 
-- Runtime: `https://github.com/nicolasramos-es/odoo-agent-runtime`
+- Runtime: `https://github.com/nicolasramos/odoo-agent-runtime`
 
 This separation keeps each project clean:
 
