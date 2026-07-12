@@ -28,3 +28,7 @@ openspec/
 
 # Private design specifications
 openspec/
+
+# Virtual environments
+.venv*/
+venv/
