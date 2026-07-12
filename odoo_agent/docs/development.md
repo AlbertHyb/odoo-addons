@@ -8,7 +8,7 @@ This guide defines the maintainable development baseline for the Odoo AI Agent S
 2. Run static validation:
 
    ```bash
-   python3 scripts/validate_addon.py
+   python3 .github/scripts/validate_addon.py
    python3 -m compileall -q odoo_agent
    ```
 
@@ -52,7 +52,7 @@ This guide defines the maintainable development baseline for the Odoo AI Agent S
 
 ## Static validation
 
-`scripts/validate_addon.py` checks:
+`.github/scripts/validate_addon.py` checks:
 
 - Python syntax through `ast`.
 - XML parseability.

@@ -18,8 +18,8 @@ The addon ships with a gettext template and starter translations for the main la
 From the repository root:
 
 ```bash
-python3 scripts/generate_i18n.py
-python3 scripts/validate_addon.py
+python3 .github/scripts/generate_i18n.py
+python3 .github/scripts/validate_addon.py
 ```
 
 The generator extracts common Odoo UI strings from Python, XML, and the addon manifest. It also reuses local Odoo base translations when available and applies module-specific translations for the agent execution terminology.
