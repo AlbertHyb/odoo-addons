@@ -129,6 +129,12 @@ Full validation with Odoo:
 odoo-bin -d <database> -i odoo_agent --test-enable --stop-after-init
 ```
 
+
+## Author
+
+**odoo_agent** was created and is maintained by **Nicolás Ramos**
+([nicolasramos.es](https://nicolasramos.es)).
+
 ## Public readiness status
 
 The module is structured for a public release, but before publishing a production tag you should validate it on a real Odoo 18 database with the runtime daemon connected end-to-end.

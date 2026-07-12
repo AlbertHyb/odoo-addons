@@ -63,6 +63,15 @@ Full validation requires Odoo 18:
 odoo-bin -d <database> -i odoo_agent --test-enable --stop-after-init
 ```
 
+
+## Author
+
+**Odoo AI Agent System (odoo_agent)** was created and is maintained by **Nicolás Ramos**
+([nicolasramos.es](https://nicolasramos.es), [@nicolasramos_es](https://twitter.com/nicolasramos_es)).
+
+This module is part of the Odoo ecosystem. If you find it useful, please contribute
+via GitHub issues, pull requests, or by sharing your experience.
+
 ## License
 
 LGPL-3.
