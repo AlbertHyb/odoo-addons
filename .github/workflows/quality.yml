@@ -13,6 +13,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Validate Odoo addon statically
-        run: python3 scripts/validate_addon.py
+        run: python3 .github/scripts/validate_addon.py
       - name: Compile addon Python files
         run: python3 -m compileall -q odoo_agent
