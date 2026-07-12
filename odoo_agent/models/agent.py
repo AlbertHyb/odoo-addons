@@ -128,6 +128,20 @@ class Agent(models.Model):
         ),
     ]
 
+    @api.onchange('engine')
+    def _onchange_engine(self):
+        """Auto-populate cli_command when the engine selection changes."""
+        engine_defaults = {
+            'codex': 'codex exec --model {model}',
+            'hermes': 'hermes run --context {instruction}',
+            'opencode': 'opencode run --model {model}',
+            'openclaw': 'openclaw agent --task {task_name} --context {instruction}',
+            'claude': 'claude --print {instruction}',
+            'custom': '',
+        }
+        if self.engine in engine_defaults:
+            self.cli_command = engine_defaults[self.engine]
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

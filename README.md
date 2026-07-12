@@ -4,6 +4,35 @@ Public Odoo 18 addon repository.
 
 This repository contains installable Odoo addons intended to be consumed through a standard Odoo addons path, Git aggregator, submodule, deployment template, or any other Odoo-compatible source management flow.
 
+
+## Screenshots
+
+<div align="center">
+  <img src="odoo_agent/static/description/screenshots/Captura%20de%20pantalla%202026-07-12%20a%20las%2019.01.03.png" alt="Task with agent communication" width="700">
+  <p><em>Task with agent communications, execution logs and agent chat</em></p>
+</div>
+
+<div align="center">
+  <img src="odoo_agent/static/description/screenshots/Captura%20de%20pantalla%202026-07-12%20a%20las%2019.03.17.png" alt="Agent execution list" width="700">
+  <p><em>Execution history with status, timestamps and log counts per run</em></p>
+</div>
+
+<div align="center">
+  <img src="odoo_agent/static/description/screenshots/Captura%20de%20pantalla%202026-07-12%20a%20las%2019.04.02.png" alt="Runtime configuration" width="700">
+  <p><em>Runtime detail with health status, version info, IP and heartbeat history</em></p>
+</div>
+
+<div align="center">
+  <img src="odoo_agent/static/description/screenshots/Captura%20de%20pantalla%202026-07-12%20a%20las%2019.05.09.png" alt="Agent configuration form" width="700">
+  <p><em>Agent setup: runtime, engine, CLI command, model, limits and instructions</em></p>
+</div>
+
+<div align="center">
+  <img src="odoo_agent/static/description/screenshots/Captura%20de%20pantalla%202026-07-12%20a%20las%2019.08.40.png" alt="Agent chatter and status log" width="700">
+  <p><em>Agent activity log: state changes, engine switches, working/idle/error cycles</em></p>
+</div>
+
+
 ## Available addons
 
 | Addon | Summary | Documentation |
