@@ -18,7 +18,7 @@ The addon ships with a gettext template and starter translations for the main la
 From the repository root:
 
 ```bash
-python3 .github/scripts/generate_i18n.py
+# generate_i18n.py was removed in cleanup; regenerate manually if needed
 python3 .github/scripts/validate_addon.py
 ```
 
