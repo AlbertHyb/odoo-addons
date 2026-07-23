@@ -38,6 +38,7 @@ This repository contains installable Odoo addons intended to be consumed through
 | Addon | Summary | Documentation |
 | --- | --- | --- |
 | `odoo_agent` | AI agent execution system for Odoo Project: runtimes, agents, executions, logs, skills, MCP, and `@mentions`. | [`odoo_agent/README.md`](odoo_agent/README.md) |
+| `mail_bot_odooclaw` | OdooClaw AI bot integration with Odoo Discuss via webhooks. | [`mail_bot_odooclaw/README.md`](mail_bot_odooclaw/README.md) |
 
 ## Repository strategy
 
