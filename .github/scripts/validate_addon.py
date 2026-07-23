@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static validation for the Odoo Agent addon without requiring an Odoo DB."""
+"""Static validation for Odoo addons without requiring an Odoo DB."""
 
 from pathlib import Path
 import ast
@@ -8,21 +8,34 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
-ADDON = ROOT / 'odoo_agent'
 
 
-def check_python():
-    for path in ADDON.rglob('*.py'):
+def discover_addons():
+    """Discover Odoo addon directories by looking for __manifest__.py."""
+    addons = []
+    for entry in ROOT.iterdir():
+        if entry.is_dir() and (entry / '__manifest__.py').exists():
+            addons.append(entry)
+    return sorted(addons)
+
+
+def check_python(addon):
+    """Check Python files parse correctly."""
+    for path in addon.rglob('*.py'):
         ast.parse(path.read_text(), filename=str(path))
 
 
-def check_xml():
-    for path in ADDON.rglob('*.xml'):
+def check_xml(addon):
+    """Check XML files parse correctly."""
+    for path in addon.rglob('*.xml'):
         ET.parse(path)
 
 
-def check_access_csv():
-    path = ADDON / 'security' / 'ir.model.access.csv'
+def check_access_csv(addon):
+    """Check that ir.model.access.csv has all required columns and valid permissions."""
+    path = addon / 'security' / 'ir.model.access.csv'
+    if not path.exists():
+        return
     with path.open(newline='') as csvfile:
         rows = list(csv.DictReader(csvfile))
     required = {
@@ -35,11 +48,14 @@ def check_access_csv():
     for row in rows:
         for column in ('perm_read', 'perm_write', 'perm_create', 'perm_unlink'):
             if row[column] not in {'0', '1'}:
-                raise AssertionError(f'{path}: {row["id"]} has invalid {column}={row[column]}')
+                raise AssertionError(
+                    f'{path}: {row["id"]} has invalid {column}={row[column]}'
+                )
 
 
-def check_i18n_files():
-    i18n_dir = ADDON / 'i18n'
+def check_i18n_files(addon):
+    """Check i18n PO/POT files are well-formed."""
+    i18n_dir = addon / 'i18n'
     if not i18n_dir.exists():
         return
     for path in i18n_dir.glob('*.po'):
@@ -49,27 +65,39 @@ def check_i18n_files():
         msgids = content.count('\nmsgid ')
         msgstrs = content.count('\nmsgstr ')
         if msgids != msgstrs:
-            raise AssertionError(f'{path} has {msgids} msgid entries and {msgstrs} msgstr entries')
-    pot = i18n_dir / 'odoo_agent.pot'
-    if pot.exists() and 'Project-Id-Version: odoo_agent 18.0' not in pot.read_text():
-        raise AssertionError(f'{pot} does not look like the addon template')
+            raise AssertionError(
+                f'{path} has {msgids} msgid entries and {msgstrs} msgstr entries'
+            )
+    pot = i18n_dir / f'{addon.name}.pot'
+    if pot.exists():
+        if f'Project-Id-Version: {addon.name}' not in pot.read_text():
+            raise AssertionError(f'{pot} does not look like the addon template')
 
 
-def check_no_forbidden_branding():
+def check_no_forbidden_branding(addon):
+    """Check that OCA branding is not present in addon files."""
     forbidden = ''.join(('O', 'C', 'A'))
-    for path in ADDON.rglob('*'):
+    for path in addon.rglob('*'):
         if path.is_file() and path.suffix in {'.py', '.xml', '.csv', '.md', '.txt'}:
             if forbidden in path.read_text(errors='ignore'):
-                raise AssertionError(f'Forbidden external branding found in {path}')
+                raise AssertionError(
+                    f'Forbidden external branding found in {path}'
+                )
 
 
 def main():
-    check_python()
-    check_xml()
-    check_access_csv()
-    check_i18n_files()
-    check_no_forbidden_branding()
-    print('odoo_agent static validation passed')
+    addons = discover_addons()
+    if not addons:
+        print('No Odoo addons discovered')
+        return
+
+    for addon in addons:
+        check_python(addon)
+        check_xml(addon)
+        check_access_csv(addon)
+        check_i18n_files(addon)
+        check_no_forbidden_branding(addon)
+        print(f'{addon.name} static validation passed')
 
 
 if __name__ == '__main__':
