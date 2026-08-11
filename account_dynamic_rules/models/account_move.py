@@ -72,14 +72,11 @@ class AccountMoveLine(models.Model):
         if self.tax_line_id:
             return
         
-        # Check account type to avoid touching Payables/Receivables (e.g. auto-generated lines)
-        if self.account_id.account_type in ('liability_payable', 'asset_receivable', 'liability_credit_card', 'asset_cash', 'liability_current'):
-             # Note: liability_current might be valid target, but usually we target expenses.
-             # Strict safety: Only touch expenses/income/assets/liabilities that are NOT the main AP/AR
-             return
-
-        # Simplified: Just ensure we don't mess with AP/AR if that's the risk
-        if self.account_id.account_type in ('liability_payable', 'asset_receivable'):
+        # Skip auto-generated lines (AP/AR, tax clearing, cash) — only touch expense/income accounts
+        if self.account_id.account_type in (
+            'liability_payable', 'asset_receivable',
+            'liability_credit_card', 'asset_cash', 'liability_current',
+        ):
             return
         
         # Helper to get partner (it might be on the move if not on the line)
@@ -104,8 +101,7 @@ class AccountMoveLine(models.Model):
 
         rules = self.env['account.dynamic.rule'].search(domain, order='sequence')
         _logger.info("Dynamic Rules found: %s for Line %s", rules, self.name)
-        
-        match_found = False
+
         for rule in rules:
             # check description match if set
             if rule.description_match:
@@ -115,8 +111,7 @@ class AccountMoveLine(models.Model):
 
             # If we reached here, the rule matches
             _logger.info("Applying Dynamic Rule: %s for Line %s", rule.name, self.name)
-            match_found = True
-            
+
             # Apply Actions
             updates = {}
             if rule.account_id:
@@ -129,7 +124,6 @@ class AccountMoveLine(models.Model):
                 self.write(updates)
 
             if rule.analytic_account_id:
-                # v16: analytic_account_id is a Many2one, not analytic_distribution dict
                 self.analytic_account_id = rule.analytic_account_id.id
             
             if rule.payment_term_id and self.move_id:
