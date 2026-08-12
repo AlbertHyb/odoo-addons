@@ -25,15 +25,6 @@ class AccountMove(models.Model):
                 # Only for Purchase Invoices (Vendor Bills) -> Vendor Bank
                 # For Sales Invoices, bank depends on Payment Mode or Company
                 move_type = vals.get('move_type', self.env.context.get('default_move_type'))
-                
-                # 3. Payment Mode (requires account_payment_partner)
-                if not vals.get('payment_mode_id'):
-                    if move_type in ('in_invoice', 'in_refund', 'in_receipt') and hasattr(partner, 'supplier_payment_mode_id'):
-                        if partner.supplier_payment_mode_id:
-                            vals['payment_mode_id'] = partner.supplier_payment_mode_id.id
-                    elif move_type in ('out_invoice', 'out_refund', 'out_receipt') and hasattr(partner, 'customer_payment_mode_id'):
-                         if partner.customer_payment_mode_id:
-                            vals['payment_mode_id'] = partner.customer_payment_mode_id.id
 
                 if move_type in ('in_invoice', 'in_refund', 'in_receipt') and not vals.get('partner_bank_id'):
                     if partner.bank_ids:
@@ -93,12 +84,6 @@ class AccountMoveLine(models.Model):
             ('product_id', 'in', [product.id, False]),
         ]
         
-        # Payment mode check (defensive)
-        if hasattr(self.env['account.dynamic.rule'], 'payment_mode_id'):
-            # Simplified: check move's payment_mode_id if exists
-            payment_mode_id = self.move_id.payment_mode_id.id if hasattr(self.move_id, 'payment_mode_id') and self.move_id.payment_mode_id else False
-            domain.append(('payment_mode_id', 'in', [payment_mode_id, False]))
-
         rules = self.env['account.dynamic.rule'].search(domain, order='sequence')
         _logger.info("Dynamic Rules found: %s for Line %s", rules, self.name)
 

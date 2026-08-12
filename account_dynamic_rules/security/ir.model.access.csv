@@ -1,6 +1,3 @@
-# Copyright 2026 Nicolás Ramos
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_account_dynamic_rule,account.dynamic.rule,model_account_dynamic_rule,account.group_account_manager,1,1,1,1
 access_account_dynamic_rule_user,account.dynamic.rule user,model_account_dynamic_rule,account.group_account_user,1,0,0,0
