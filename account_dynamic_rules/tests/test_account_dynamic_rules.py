@@ -45,11 +45,25 @@ class TestAccountDynamicRules(TransactionCase):
         self.product_generic.property_account_income_id = self.account_income
 
         # Create a purchase tax dynamically (Odoo 16 clean install may not have one)
+        # Must include invoice_repartition_line_ids with a distinct account so Odoo 16
+        # does not inherit the base line's account into the tax line (which would
+        # cause "Dynamic rules must not override VAT/tax line accounts" errors).
         self.purchase_tax = self.env['account.tax'].create({
             'name': 'Test Purchase Tax 21%',
             'amount_type': 'percent',
             'amount': 21.0,
             'type_tax_use': 'purchase',
+            'invoice_repartition_line_ids': [
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+                (0, 0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'account_id': self.account_start.id,
+                }),
+            ],
         })
 
         # Create Rule: Partner A + Generic Product -> Target Account
