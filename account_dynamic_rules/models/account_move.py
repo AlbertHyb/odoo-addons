@@ -145,10 +145,11 @@ class AccountMoveLine(models.Model):
             if updates:
                 self.write(updates)
 
-            # Odoo 17 compatibility: use analytic_account_id (Many2one)
-            # instead of analytic_distribution (dict format used in v18)
+            # Odoo 17: use analytic_distribution (dict of plan_id -> percentage)
             if rule.analytic_account_id:
-                self.analytic_account_id = rule.analytic_account_id.id
+                distribution = dict(self.analytic_distribution or {})
+                distribution[str(rule.analytic_account_id.plan_id.id)] = 100
+                self.analytic_distribution = distribution
 
             if rule.payment_term_id and self.move_id:
                  # Update parent move payment term

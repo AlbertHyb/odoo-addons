@@ -356,8 +356,10 @@ class TestAccountDynamicRules(TransactionCase):
 
     def test_analytic_account_applied(self):
         """Test that a rule with analytic_account_id sets the analytic account on the line."""
+        analytic_plan = self.env['account.analytic.plan'].create({'name': 'Test Analytic Plan'})
         analytic_acct = self.env['account.analytic.account'].create({
             'name': 'Test Analytic Account',
+            'plan_id': analytic_plan.id,
         })
 
         rule = self.env["account.dynamic.rule"].create({
@@ -381,5 +383,9 @@ class TestAccountDynamicRules(TransactionCase):
             "price_unit": 100,
         })
 
-        # Odoo 17: analytic_account_id is a Many2one field
-        self.assertEqual(line.analytic_account_id, analytic_acct, "Rule analytic_account_id should be applied")
+        # Odoo 17: the analytic account is applied via analytic_distribution
+        self.assertEqual(
+            line.analytic_distribution.get(str(analytic_acct.plan_id.id)),
+            100,
+            "Rule analytic account should be applied via analytic_distribution",
+        )
