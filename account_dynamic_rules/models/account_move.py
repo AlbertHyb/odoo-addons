@@ -109,7 +109,7 @@ class AccountMoveLine(models.Model):
                 self.write(updates)
 
             if rule.analytic_account_id:
-                self.analytic_account_id = rule.analytic_account_id.id
+                self.analytic_distribution = {str(rule.analytic_account_id.id): 100}
             
             if rule.payment_term_id and self.move_id:
                  # Update parent move payment term
