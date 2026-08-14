@@ -93,38 +93,58 @@ class TestMailOdooClawReplyToken(TransactionCase):
     def _mock_request(self, payload):
         mock = MagicMock()
         mock.httprequest.data = json.dumps(payload).encode()
-        mock.env = self.env
+        mock.httprequest.remote_addr = "192.168.1.50"
+        # env proxy: real Odoo env for models (so _validate works),
+        # stubbed ir.config_parameter so allowlist/token checks are deterministic.
+        params_mock = MagicMock()
+        params_mock.sudo().get_param = MagicMock(
+            side_effect=lambda key, default="": (
+                "192.168.1.0/24" if key == "odooclaw.allowed_ips" else default
+            )
+        )
+        real_env = self.env
+
+        class _EnvProxy:
+            def __getitem__(self, key):
+                if key == "ir.config_parameter":
+                    return params_mock
+                return real_env[key]
+
+        mock.env = _EnvProxy()
         mock.make_json_response = lambda d, **kw: MagicMock(
-            data=json.dumps(d).encode()
+            data=json.dumps(d).encode(), status_code=kw.get("status", 400)
         )
         return mock
 
     def test_controller_no_token_rejected(self):
         from ..controllers.main import OdooClawController
-        with patch("odoo.http.request",
-                   self._mock_request({"model": "crm.lead", "res_id": 1,
-                                       "message": "hi"})):
-            resp = OdooClawController().odooclaw_reply()
+        mock_req = self._mock_request({"model": "crm.lead", "res_id": 1,
+                                       "message": "hi"})
+        with patch("odoo.addons.mail_bot_odooclaw.controllers.main.request", new=mock_req), \
+             patch("odoo.addons.mail_bot_odooclaw.controllers.security.request", new=mock_req):
+            resp = OdooClawController.odooclaw_reply.__wrapped__(OdooClawController())
             data = json.loads(resp.data)
             self.assertEqual(data["reason"], "Missing reply_token")
 
     def test_controller_expired_token_rejected(self):
         rec = self._make_token(offset_seconds=-1)
         from ..controllers.main import OdooClawController
-        with patch("odoo.http.request",
-                   self._mock_request({"model": "crm.lead", "res_id": 1,
-                                       "message": "hi", "reply_token": rec.token})):
-            resp = OdooClawController().odooclaw_reply()
+        mock_req = self._mock_request({"model": "crm.lead", "res_id": 1,
+                                       "message": "hi", "reply_token": rec.token})
+        with patch("odoo.addons.mail_bot_odooclaw.controllers.main.request", new=mock_req), \
+             patch("odoo.addons.mail_bot_odooclaw.controllers.security.request", new=mock_req):
+            resp = OdooClawController.odooclaw_reply.__wrapped__(OdooClawController())
             data = json.loads(resp.data)
             self.assertEqual(data["reason"], "Invalid or expired reply_token")
 
     def test_controller_valid_token_passes_validation(self):
         rec = self._make_token()
         from ..controllers.main import OdooClawController
-        with patch("odoo.http.request",
-                   self._mock_request({"model": "crm.lead", "res_id": 1,
-                                       "message": "hi", "reply_token": rec.token})):
-            resp = OdooClawController().odooclaw_reply()
+        mock_req = self._mock_request({"model": "crm.lead", "res_id": 1,
+                                       "message": "hi", "reply_token": rec.token})
+        with patch("odoo.addons.mail_bot_odooclaw.controllers.main.request", new=mock_req), \
+             patch("odoo.addons.mail_bot_odooclaw.controllers.security.request", new=mock_req):
+            resp = OdooClawController.odooclaw_reply.__wrapped__(OdooClawController())
             data = json.loads(resp.data)
             self.assertNotEqual(data.get("reason"), "Invalid or expired reply_token")
             self.assertNotEqual(data.get("reason"), "Missing reply_token")
