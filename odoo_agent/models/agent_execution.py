@@ -15,6 +15,11 @@ class AgentExecution(models.Model):
     _order = 'create_date desc, id'
     _check_company_auto = True
 
+    _sql = """
+        CREATE INDEX IF NOT EXISTS idx_agent_execution_runtime_status_create
+            ON odoo_agent_execution (runtime_id, status, create_date);
+    """
+
     name = fields.Char(string='Title', required=True, tracking=True)
     prompt = fields.Text(string='Prompt')
     agent_id = fields.Many2one(

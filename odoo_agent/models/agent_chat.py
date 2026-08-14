@@ -12,6 +12,11 @@ class AgentChatMessage(models.Model):
     _inherit = ['mail.thread']
     _check_company_auto = True
 
+    _sql = """
+        CREATE INDEX IF NOT EXISTS idx_agent_chat_message_agent_project_task
+            ON odoo_agent_chat_message (agent_id, project_task_id);
+    """
+
     agent_id = fields.Many2one(
         'odoo.agent',
         string='Agent',
