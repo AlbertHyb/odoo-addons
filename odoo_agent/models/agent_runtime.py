@@ -34,6 +34,7 @@ class AgentRuntime(models.Model):
     api_key = fields.Char(
         string='API Key',
         help='API key for runtime authentication',
+        index=True,
         groups='odoo_agent.group_agent_admin',
     )
     version = fields.Char(string='Version', help='Daemon/CLI version')
