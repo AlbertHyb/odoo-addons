@@ -81,6 +81,15 @@ class AgentChatMessage(models.Model):
         index=True,
     )
 
+    @api.model_cr_context
+    def _auto_init(self):
+        res = super()._auto_init()
+        self.env.cr.execute('''
+            CREATE INDEX IF NOT EXISTS idx_agent_chat_message_agent_project_task
+            ON odoo_agent_chat_message (agent_id, project_task_id)
+        ''')
+        return res
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

@@ -159,6 +159,19 @@ class AgentExecution(models.Model):
         index=True,
     )
 
+    @api.model_cr_context
+    def _auto_init(self):
+        res = super()._auto_init()
+        self.env.cr.execute('''
+            CREATE INDEX IF NOT EXISTS idx_agent_execution_runtime_status_create
+            ON odoo_agent_execution (runtime_id, status, create_date)
+        ''')
+        self.env.cr.execute('''
+            CREATE INDEX IF NOT EXISTS idx_agent_execution_create_date
+            ON odoo_agent_execution (create_date)
+        ''')
+        return res
+
     @api.depends('log_ids')
     def _compute_log_count(self):
         for execution in self:
