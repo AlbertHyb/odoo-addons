@@ -34,8 +34,8 @@ class MailThread(models.AbstractModel):
             }
         )
 
-    @api.returns("mail.message", lambda value: value.id)
     def message_post(self, **kwargs):
+        """Forward Odoo 19's keyword-only ``message_post`` API unchanged."""
         message = super(MailThread, self).message_post(**kwargs)
 
         # Determine if OdooClaw is mentioned or it's a direct message to OdooClaw
